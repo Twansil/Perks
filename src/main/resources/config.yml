@@ -1,0 +1,12 @@
+## NOTE! The chat suffix and prefix options should be set up to match regular server chat!
+## A chat format of '<RankName Username>:' would have the prefix '<' and suffix '>'
+## Default values are set up for MCME chat (as of 1.5.2).
+Settings:
+  AllowTpAll: true
+  AllowTp: true
+  BroadcastTour: true
+  TourChat: true
+  LogTourChat: true
+ChatSettings:
+  UserChatColor: WHITE
+  RangerChatColor: WHITE

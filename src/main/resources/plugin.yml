@@ -1,0 +1,47 @@
+name: MCMETours
+main: co.mcme.MCMETours.MCMETours
+version: 2.3.2
+author: dags_
+softdepend: [ChatSuite]
+
+commands:
+   tour:
+      description: Checks if there are any tours running
+      usage: /<command> <argument>
+      permission: MCMETours.user
+      permission-message: Sorry, you don't have don't have permission
+   tours:
+      description: Admin commands
+      usage: /<command> [argument]
+      permission: MCMETours.admin
+      permission-message: Sorry, you don't have don't have permission
+   tourtpa:
+      description: Teleports all users in current tour group (User must be on the Rangers.List in the config.yml)
+      usage: /<command>
+      permission: MCMETours.ranger
+      permission-message: Sorry, you don't have don't have permission
+   tourtp:
+      description: Teleports all users in current tour group (User must be on the Rangers.List in the config.yml)
+      usage: /<command> <playername>
+      permission: MCMETours.ranger
+      permission-message: Sorry, you don't have don't have permission
+   ttpa:
+      description: Teleports all users in current tour group (User must be on the Rangers.List in the config.yml)
+      usage: /<command>
+      permission: MCMETours.ranger
+      permission-message: Sorry, you don't have don't have permission
+   ttp:
+      description: Teleports all users in current tour group (User must be on the Rangers.List in the config.yml)
+      usage: /<command> <playername>
+      permission: MCMETours.ranger
+      permission-message: Sorry, you don't have don't have permission
+permissions:
+  MCMETours.user:
+    description: User permissions.
+    default: true
+  MCMETours.ranger:
+    description: Ranger permissions.
+    default: op
+  MCMETours.admin:
+    description: Admin permissions.
+    default: op
