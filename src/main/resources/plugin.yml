@@ -1,0 +1,47 @@
+name: MCMEPerks
+main: co.mcme.perks.MCMEPerks
+version: 0.5
+authors: [daggs, meggawatts]
+
+commands:
+   mount:
+      description: Mount a horse!
+      usage: /mount
+      permission: perks.user
+      permission-message: Sorry, you don't have don't have permission to use that command.
+   perk:
+      description: Give perk item!
+      usage: /perk [perk type]
+      permission: perks.user
+      permission-message: Sorry, you don't have don't have permission to use that command.
+   walk:
+      description: toggle walk speed
+      usage: /walk
+      permission: perks.walk
+      permission-message: Sorry, you don't have don't have permission to use that command.
+   perkstoggle:
+      description: Toggle perks on/off
+      usage: /perkstoggle
+      permission: perks.admin
+      permission-message: Sorry, you don't have don't have permission to use that command.
+permissions:
+  perks.user:
+    default: true
+  perks.walk:
+    default: true
+  perks.admin:
+    default: op
+  perks.tag:
+    default: op
+  perks.mount:
+    default: op
+  perks.item.jump:
+    default: op
+  perks.item.sprint:
+    default: op
+  perks.item.dizzy:
+    default: op
+  perks.item.slowmo:
+    default: op
+  perks.item.hookshot:
+    default: op
