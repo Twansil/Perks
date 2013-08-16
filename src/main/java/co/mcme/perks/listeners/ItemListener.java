@@ -24,30 +24,39 @@ import org.bukkit.potion.PotionEffectType;
 public class ItemListener implements Listener {
 
 	@EventHandler
-	private void fishClick(PlayerInteractEvent event) {
+	private void itemClick(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		if (event.hasItem() && (event.getAction().equals(Action.RIGHT_CLICK_AIR) 
 				|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 				&& p.getItemInHand().getItemMeta().hasDisplayName() 
-				&& p.getItemInHand().getItemMeta().hasLore() && toggle) {
+				&& p.getItemInHand().getItemMeta().hasLore() 
+				&& toggle) {
 			ItemMeta itm = p.getItemInHand().getItemMeta();
 			if (itm.getLore().toString().contains(p.getName())) {
-				event.setCancelled(!itm.getDisplayName().equals(ChatColor.GOLD + "Grappling Hook Perk"));
 				
 				String perk = itm.getDisplayName();
 				String perknode = ChatColor.stripColor(perk
 						.replace(" Perk", "").toLowerCase());
 				
 				if (p.hasPermission("perks.item." + perknode)) {
-					PotionEffectType effect = getEffect(perk).getType();
-					Collection<PotionEffect> activeEffects = p.getActivePotionEffects();
-					if (activeEffects.toString().contains(effect.getName())) {
-						p.removePotionEffect(effect);
-						if(effect.getName().contains("SLOW") && activeEffects.toString().contains("SLOW")){
-							p.removePotionEffect(PotionEffectType.SLOW_DIGGING);
-						}
+					if(perknode.equals("jockey")){
+						JockeyListener.jockey(event);
+						event.setCancelled(true);
+					}
+					if(perknode.equals("grappling hook")){
+						event.setCancelled(false);
 					} else {
-						p.addPotionEffects(addPotionEffect(p, perk));
+						event.setCancelled(true);
+						PotionEffectType effect = getEffect(perk).getType();
+						Collection<PotionEffect> activeEffects = p.getActivePotionEffects();
+						if (activeEffects.toString().contains(effect.getName())) {
+							p.removePotionEffect(effect);
+							if(effect.getName().contains("SLOW") && activeEffects.toString().contains("SLOW")){
+								p.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+							}
+						} else {
+							p.addPotionEffects(addPotionEffect(p, perk));
+						}
 					}
 				}
 			} else {

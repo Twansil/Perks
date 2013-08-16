@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ import co.mcme.perks.listeners.GrapplingHookListener;
 import co.mcme.perks.listeners.HorseListener;
 import co.mcme.perks.listeners.ItemListener;
 import co.mcme.perks.listeners.TagListener;
+import co.mcme.perks.listeners.JockeyListener;;
 
 /**
  * 
@@ -59,8 +61,8 @@ public class MCMEPerks extends JavaPlugin {
 	}
 
 	private void loadDefaults() {
-		getConfig().options().copyDefaults(true);
-		saveConfig();
+		this.getConfig().options().copyDefaults(true);
+		this.saveConfig();
 	}
 
 	private void setupConfig() {
@@ -81,6 +83,7 @@ public class MCMEPerks extends JavaPlugin {
 		pm.registerEvents(new HorseListener(), this);
 		pm.registerEvents(new ItemListener(), this);
 		pm.registerEvents(new GrapplingHookListener(), this);
+		pm.registerEvents(new JockeyListener(), this);
 		getCommand("mount").setExecutor(new Commands());
 		getCommand("perk").setExecutor(new Commands());
 		getCommand("walk").setExecutor(new Commands());
@@ -112,6 +115,14 @@ public class MCMEPerks extends JavaPlugin {
 				if (e.getType().equals(EntityType.HORSE)) {
 					e.remove();
 				}
+			}
+		}
+	}
+	
+	public static void unJockeyAll(){
+		for(Player p : Bukkit.getOnlinePlayers()){
+			if(p.isInsideVehicle() && p.getVehicle() instanceof Player){
+				p.getVehicle().eject();
 			}
 		}
 	}

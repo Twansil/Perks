@@ -1,6 +1,6 @@
 name: MCMEPerks
 main: co.mcme.perks.MCMEPerks
-version: 0.5
+version: 0.6
 authors: [daggs, meggawatts]
 
 commands:
@@ -25,11 +25,24 @@ commands:
       permission: perks.admin
       permission-message: Sorry, you don't have don't have permission to use that command.
 permissions:
+  perks.premium:
+    default: op
+    children:
+      perks.mount: true
+      perks.tag: true
+      perks.item.jump: true
+      perks.item.sprint: true
+      perks.item.dizzy: true
+      perks.item.slowmo: true
+      perks.item.hookshot: true
+      perks.item.jockey: true
   perks.user:
     default: true
   perks.walk:
     default: true
   perks.admin:
+    default: op
+  perks.antijockey:
     default: op
   perks.tag:
     default: op
@@ -44,4 +57,6 @@ permissions:
   perks.item.slowmo:
     default: op
   perks.item.hookshot:
+    default: op
+  perks.item.jockey:
     default: op

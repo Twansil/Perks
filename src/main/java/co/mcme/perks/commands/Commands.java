@@ -78,6 +78,7 @@ public class Commands implements CommandExecutor {
 						cs.sendMessage(scd + "Perks have been toggled " + prim
 								+ "off!");
 						MCMEPerks.clearHorses();
+						MCMEPerks.unJockeyAll();
 						return true;
 					} else {
 						toggle = true;

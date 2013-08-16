@@ -65,7 +65,9 @@ public class HorseListener implements Listener {
 	@EventHandler
 	public void riderQuit(PlayerQuitEvent event) {
 		if (event.getPlayer().isInsideVehicle()) {
-			event.getPlayer().getVehicle().remove();
+			if(event.getPlayer().getVehicle() instanceof Horse){
+				event.getPlayer().getVehicle().remove();
+			}
 		}
 	}
 
@@ -73,7 +75,9 @@ public class HorseListener implements Listener {
 	@EventHandler
 	public void riderKick(PlayerKickEvent event) {
 		if (event.getPlayer().isInsideVehicle()) {
-			event.getPlayer().getVehicle().remove();
+			if(event.getPlayer().getVehicle() instanceof Horse){
+				event.getPlayer().getVehicle().remove();
+			}
 		}
 	}
 

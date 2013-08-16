@@ -54,6 +54,10 @@ public class ItemUtil {
             lore.add(ChatColor.DARK_PURPLE + owner);
             enchant = Enchantment.DURABILITY;
         }
+		if (perk.equals("jockey")) {
+			itemName = ChatColor.YELLOW+ "Jockey Perk";
+			lore.add(ChatColor.DARK_PURPLE + owner);
+		}
 		ItemStack it = new ItemStack(m);
 		ItemMeta meta = it.getItemMeta();
 		meta.setDisplayName(itemName);
