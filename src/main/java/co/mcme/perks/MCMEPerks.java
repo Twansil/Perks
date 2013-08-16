@@ -57,6 +57,7 @@ public class MCMEPerks extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		clearHorses();
+		unJockeyAll();
 		TagListener.clearBoard();
 	}
 
