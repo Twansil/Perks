@@ -36,7 +36,7 @@ public class TagListener implements Listener{
     	donator.setPrefix(MCMEPerks.donarTag.toString());
 	}
     
-    @EventHandler (priority = EventPriority.NORMAL)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void playerJoin(PlayerJoinEvent event){
     	Player p = event.getPlayer();
     	if(p.hasPermission("perks.tag")){
