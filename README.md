@@ -4,7 +4,7 @@ MCMEPerks
 <i>In-game perks for the generous donators of MCME!</i><br/>
 <br/>
 Download:<br/>
-http://mcme.co/mods/dags/MCMEPerks-0.5.jar
+http://mcme.co:8080/job/Perks/
 <br/>
 
 Features:<br/>
