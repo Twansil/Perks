@@ -1,6 +1,6 @@
 name: MCMEPerks
 main: co.mcme.perks.MCMEPerks
-version: 0.6
+version: 0.7
 authors: [daggs, meggawatts]
 
 commands:
