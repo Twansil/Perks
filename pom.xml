@@ -5,7 +5,7 @@
 
 	<groupId>co.mcme</groupId>
 	<artifactId>MCMEPerks</artifactId>
-	<version>0.7</version>
+	<version>0.7.1</version>
 	<packaging>jar</packaging>
 
 	<url>http://dev.bukkit.org</url>

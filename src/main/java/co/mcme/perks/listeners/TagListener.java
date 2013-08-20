@@ -1,7 +1,6 @@
 package co.mcme.perks.listeners;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,7 +41,11 @@ public class TagListener implements Listener{
     	if(p.hasPermission("perks.tag")){
     		donator.addPlayer(p);
     		if(!p.getDisplayName().startsWith("§")){
-    			p.setPlayerListName(ChatColor.WHITE+p.getDisplayName());
+    			String name = p.getName();
+    			if(name.length()>=15){
+    				name = name.substring(0, 14);
+    			}
+    			p.setPlayerListName("§f"+name);
     		}
     	}
     }

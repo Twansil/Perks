@@ -1,6 +1,6 @@
 name: MCMEPerks
 main: co.mcme.perks.MCMEPerks
-version: 0.7
+version: 0.7.1
 authors: [daggs, meggawatts]
 
 commands:
@@ -10,17 +10,17 @@ commands:
       permission: perks.user
       permission-message: Sorry, you don't have don't have permission to use that command.
    perk:
-      description: Give perk item!
+      description: Get a perk item.
       usage: /perk [perk type]
       permission: perks.user
       permission-message: Sorry, you don't have don't have permission to use that command.
    walk:
-      description: toggle walk speed
+      description: Toggle walk speed.
       usage: /walk
       permission: perks.walk
       permission-message: Sorry, you don't have don't have permission to use that command.
    perkstoggle:
-      description: Toggle perks on/off
+      description: Toggle perks on/off.
       usage: /perkstoggle
       permission: perks.admin
       permission-message: Sorry, you don't have don't have permission to use that command.
