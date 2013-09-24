@@ -60,7 +60,7 @@ permissions:
     default: op
   perks.item.jockey:
     default: op
-    perks.pack.all:
+  perks.pack.all:
     default: op
     children:
       perks.tag: true
