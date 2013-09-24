@@ -60,3 +60,21 @@ permissions:
     default: op
   perks.item.jockey:
     default: op
+    perks.pack.all:
+    default: op
+    children:
+      perks.tag: true
+      perks.mount: true
+      perks.item.jump: true
+      perks.item.sprint: true
+      perks.item.dizzy: true
+      perks.item.slowmo: true
+      perks.item.hookshot: true
+  perks.pack.dd092013:
+    default: op
+    children:
+      perks.item.sprint: true
+      perks.item.jump: true
+      perks.item.dizzy: true
+      perks.item.slowmo: true
+      perks.item.hookshot: true
