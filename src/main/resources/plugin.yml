@@ -1,5 +1,5 @@
 name: MCMEPerks
-main: co.mcme.perks.MCMEPerks
+main: com.mcmiddleearth.perks.MCMEPerks
 version: 0.7.1
 authors: [daggs, meggawatts]
 

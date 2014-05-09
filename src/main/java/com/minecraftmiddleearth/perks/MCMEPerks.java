@@ -1,4 +1,4 @@
-package co.mcme.perks;
+package com.mcmiddleearth.perks;
 
 import java.util.HashSet;
 
@@ -12,12 +12,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import co.mcme.perks.commands.Commands;
-import co.mcme.perks.listeners.GrapplingHookListener;
-import co.mcme.perks.listeners.HorseListener;
-import co.mcme.perks.listeners.ItemListener;
-import co.mcme.perks.listeners.TagListener;
-import co.mcme.perks.listeners.JockeyListener;;
+import com.mcmiddleearth.perks.commands.Commands;
+import com.mcmiddleearth.perks.listeners.GrapplingHookListener;
+import com.mcmiddleearth.perks.listeners.HorseListener;
+import com.mcmiddleearth.perks.listeners.ItemListener;
+import com.mcmiddleearth.perks.listeners.TagListener;
+import com.mcmiddleearth.perks.listeners.JockeyListener;;
 
 /**
  * 

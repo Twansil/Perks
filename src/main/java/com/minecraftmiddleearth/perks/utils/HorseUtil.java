@@ -1,4 +1,4 @@
-package co.mcme.perks.utils;
+package com.mcmiddleearth.perks.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

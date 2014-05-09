@@ -1,7 +1,7 @@
-package co.mcme.perks.listeners;
+package com.mcmiddleearth.perks.listeners;
 
-import static co.mcme.perks.MCMEPerks.prim;
-import static co.mcme.perks.MCMEPerks.scd;
+import static com.mcmiddleearth.perks.MCMEPerks.prim;
+import static com.mcmiddleearth.perks.MCMEPerks.scd;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

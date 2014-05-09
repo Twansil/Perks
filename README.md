@@ -1,10 +1,9 @@
 MCMEPerks
 =========
 
-<i>In-game perks for the generous donators of MCME!</i><br/>
+<i>In-game perks</i><br/>
 <br/>
-Download:<br/>
-http://mcme.co:8080/job/Perks/
+Author(s): daggs
 <br/>
 
 Features:<br/>

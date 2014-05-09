@@ -1,4 +1,4 @@
-package co.mcme.perks.listeners;
+package com.mcmiddleearth.perks.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import co.mcme.perks.MCMEPerks;
+import com.mcmiddleearth.perks.MCMEPerks;
 
 /**
  * 

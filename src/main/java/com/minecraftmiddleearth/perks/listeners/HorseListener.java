@@ -1,6 +1,6 @@
-package co.mcme.perks.listeners;
+package com.mcmiddleearth.perks.listeners;
 
-import static co.mcme.perks.MCMEPerks.scd;
+import static com.mcmiddleearth.perks.MCMEPerks.scd;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
-import co.mcme.perks.utils.HorseUtil;
+import com.mcmiddleearth.perks.utils.HorseUtil;
 
 /**
  * 

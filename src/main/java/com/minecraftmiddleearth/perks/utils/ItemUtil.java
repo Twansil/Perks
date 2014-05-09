@@ -1,6 +1,6 @@
-package co.mcme.perks.utils;
+package com.mcmiddleearth.perks.utils;
 
-import static co.mcme.perks.MCMEPerks.itemType;
+import static com.mcmiddleearth.perks.MCMEPerks.itemType;
 
 import java.util.ArrayList;
 import java.util.List;
