@@ -1,19 +1,19 @@
 package com.mcmiddleearth.perks.commands;
 
-import static co.mcmiddleearth.perks.MCMEPerks.perks;
-import static co.mcmiddleearth.perks.MCMEPerks.prim;
-import static co.mcmiddleearth.perks.MCMEPerks.scd;
-import static co.mcmiddleearth.perks.MCMEPerks.toggle;
-import static co.mcmiddleearth.perks.MCMEPerks.walkSpeed;
+import static com.mcmiddleearth.perks.MCMEPerks.perks;
+import static com.mcmiddleearth.perks.MCMEPerks.prim;
+import static com.mcmiddleearth.perks.MCMEPerks.scd;
+import static com.mcmiddleearth.perks.MCMEPerks.toggle;
+import static com.mcmiddleearth.perks.MCMEPerks.walkSpeed;
 
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import co.mcmiddleearth.perks.MCMEPerks;
-import co.mcmiddleearth.perks.utils.HorseUtil;
-import co.mcmiddleearth.perks.utils.ItemUtil;
+import com.mcmiddleearth.perks.MCMEPerks;
+import com.mcmiddleearth.perks.utils.HorseUtil;
+import com.mcmiddleearth.perks.utils.ItemUtil;
 
 /**
  * 

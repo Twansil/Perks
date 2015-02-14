@@ -1,17 +1,17 @@
-package co.mcmiddleearth.perks.commands;
+package com.mcmiddleearth.perks.commands;
 
-import static co.mcmiddleearth.perks.MCMEPerks.err;
-import static co.mcmiddleearth.perks.MCMEPerks.perks;
-import static co.mcmiddleearth.perks.MCMEPerks.prim;
-import static co.mcmiddleearth.perks.MCMEPerks.scd;
-import static co.mcmiddleearth.perks.MCMEPerks.toggle;
+import static com.mcmiddleearth.perks.MCMEPerks.err;
+import static com.mcmiddleearth.perks.MCMEPerks.perks;
+import static com.mcmiddleearth.perks.MCMEPerks.prim;
+import static com.mcmiddleearth.perks.MCMEPerks.scd;
+import static com.mcmiddleearth.perks.MCMEPerks.toggle;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import co.mcmiddleearth.perks.MCMEPerks;
+import com.mcmiddleearth.perks.MCMEPerks;
 
 /**
  * 
