@@ -17,7 +17,9 @@ import com.mcmiddleearth.perks.listeners.GrapplingHookListener;
 import com.mcmiddleearth.perks.listeners.HorseListener;
 import com.mcmiddleearth.perks.listeners.ItemListener;
 import com.mcmiddleearth.perks.listeners.TagListener;
-import com.mcmiddleearth.perks.listeners.JockeyListener;;
+import com.mcmiddleearth.perks.listeners.JockeyListener;
+import org.bukkit.Material;
+;
 
 /**
  * 
@@ -32,6 +34,7 @@ public class MCMEPerks extends JavaPlugin {
 	public static Float walkSpeedConf;
 	public static Float walkSpeed;
 	public static HashSet<String> perks = new HashSet<String>();
+        public static HashSet<Material> perkItems = new HashSet<Material>();
 	public static ChatColor prim = ChatColor.DARK_AQUA;
 	public static ChatColor scd = ChatColor.GRAY;
 	public static ChatColor err = ChatColor.DARK_RED;
