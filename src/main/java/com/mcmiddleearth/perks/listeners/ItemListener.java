@@ -77,11 +77,12 @@ public class ItemListener implements Listener {
 						}
 					}
 				}
+			}else {
+                                if (p.getItemInHand().getItemMeta().getDisplayName().contains(" Perk")) {
+                                        p.sendMessage(scd + "Sorry, that is not your perk item!");
+                                        p.getInventory().remove(p.getItemInHand());
+                                }
 			}
-//                        else {
-//				p.sendMessage(scd + "Sorry, that is not your perk item!");
-//				p.getInventory().remove(p.getItemInHand());
-//			}
 		} else {
 			if (!toggle) {
 				p.sendMessage(scd + "Sorry, perks have been disabled!");
