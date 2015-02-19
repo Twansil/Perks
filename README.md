@@ -3,7 +3,7 @@ MCMEPerks
 
 <i>In-game perks</i><br/>
 <br/>
-Author(s): Dags, meggawatts, DonoA
+Author(s): Dags, DonoA
 <br/>
 
 Features:<br/>
