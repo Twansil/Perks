@@ -72,11 +72,11 @@ public class ItemUtil {
 			lore.add(ChatColor.DARK_PURPLE + owner);
 		}
 		if (perk.equals("hookshot")) {
-            m = Material.FISHING_ROD;
-            itemName = ChatColor.GOLD + "Grappling Hook Perk";
-            lore.add(ChatColor.DARK_PURPLE + owner);
-            enchant = Enchantment.DURABILITY;
-        }
+                    m = Material.FISHING_ROD;
+                    itemName = ChatColor.RED + "Grappling Hook Perk";
+                    lore.add(ChatColor.DARK_PURPLE + owner);
+                    enchant = Enchantment.DURABILITY;
+                }
 		if (perk.equals("jockey")) {
 			itemName = ChatColor.YELLOW+ "Jockey Perk";
 			lore.add(ChatColor.DARK_PURPLE + owner);

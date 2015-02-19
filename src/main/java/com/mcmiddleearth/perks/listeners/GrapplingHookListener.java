@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 meggawatts
+ * Copyright (c) 2015 Dallen
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,117 +24,75 @@
 package com.mcmiddleearth.perks.listeners;
 
 import static com.mcmiddleearth.perks.MCMEPerks.scd;
-
+import com.mcmiddleearth.perks.utils.VelocityUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.entity.Fish;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * 
- * @author meggawatts <meggawatts@mcme.co>
+ *
+ * @author Dallen
  */
 public class GrapplingHookListener implements Listener {
 
-	Map<String, Boolean> lineIsOut = new HashMap<String, Boolean>();
-	Map<String, Fish> hookDest = new HashMap<String, Fish>();
-	Map<String, PlayerFishEvent> fishEventMap = new HashMap<String, PlayerFishEvent>();
+    ArrayList<String> Lines = new ArrayList<>();
 
-	// itemName = ChatColor.GOLD + "Grappling Hook Perk";
-	// lore.add(ChatColor.DARK_PURPLE + owner);
-	@EventHandler
-	public void throwHook(ProjectileLaunchEvent event) {
-		if ((event.getEntity() instanceof Fish)) {
-			Fish hook = (Fish) event.getEntity();
-			if ((hook.getShooter() != null)
-					&& ((hook.getShooter() instanceof Player))) {
-				Player player = (Player) hook.getShooter();
-				ItemStack iih = new ItemStack(player.getItemInHand());
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent e){
+        if(e.getEntity().getShooter() instanceof Player){
+            Player shooter = (Player) e.getEntity().getShooter();
+            if(shooter.getItemInHand().getType().equals(Material.FISHING_ROD) 
+                    && shooter.getItemInHand().hasItemMeta()){
+                ItemMeta im = shooter.getItemInHand().getItemMeta();
+                if(im.hasLore() && im.hasDisplayName() && im.hasEnchants()){
+                    if(im.getDisplayName().equalsIgnoreCase(ChatColor.RED + "Grappling Hook Perk")
+                            && im.getLore().contains(ChatColor.DARK_PURPLE + shooter.getName())
+                            && im.hasEnchant(Enchantment.DURABILITY)){
+                        if(!shooter.hasPermission("perks.item.hookshot")){
+                            shooter.sendMessage(scd + "Sorry, you cannot use that perk item!");
+                            shooter.getInventory().remove(shooter.getItemInHand());
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-				ItemMeta im = iih.getItemMeta();
-
-				if (im.getDisplayName() == null || im.getLore() == null) {
-					return;
-				}
-				if (im.getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "Grappling Hook Perk") 
-						&& im.getLore().toString().contains(player.getName()) 
-						&& player.hasPermission("perks.item.hookshot")) {
-					setLineOut(player, Boolean.valueOf(true));
-					this.hookDest.put(player.getName(), hook);
-				} else {
-					player.sendMessage(scd + "Sorry, you cannot use that perk item!");
-					player.getInventory().remove(player.getItemInHand());
-				}
-			}
-		}
-	}
-
-	@EventHandler
-	public void fishEvent(PlayerFishEvent event) {
-		Player player = event.getPlayer();
-		ItemStack iih = new ItemStack(player.getItemInHand());
-
-		ItemMeta im = iih.getItemMeta();
-
-		if (im.getDisplayName() == null || im.getLore() == null) {
-			return;
-		}
-		if (!im.getDisplayName().equalsIgnoreCase(
-				ChatColor.GOLD + "Grappling Hook Perk")
-				|| !im.getLore().toString().contains(player.getName())) {
-			return;
-		}
-
-		if (event.getState() == PlayerFishEvent.State.IN_GROUND) {
-			if (this.hookDest.get(player.getName()) == null) {
-				return;
-			}
-			Location loc = ((Fish) this.hookDest.get(player.getName()))
-					.getLocation();
-			loc.setPitch(player.getLocation().getPitch());
-			loc.setYaw(player.getLocation().getYaw());
-			player.getWorld().playSound(loc, Sound.MAGMACUBE_JUMP, 10.0F, 1.0F);
-			player.teleport(loc);
-		} else if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY) {
-			event.getCaught().teleport(player.getLocation());
-		}
-		if (event.getState() != PlayerFishEvent.State.FISHING) {
-			setLineOut(player, Boolean.valueOf(false));
-			setFishEvent(player, null);
-		} else {
-			setFishEvent(player, event);
-		}
-	}
-
-	public void setLineOut(Player player, Boolean b) {
-		this.lineIsOut.put(player.getName(), b);
-	}
-
-	public Boolean getLineOut(Player player) {
-		if (this.lineIsOut.containsKey(player.getName())) {
-			return (Boolean) this.lineIsOut.get(player.getName());
-		}
-		return Boolean.valueOf(false);
-	}
-
-	public void setFishEvent(Player player, PlayerFishEvent e) {
-		this.fishEventMap.put(player.getName(), e);
-	}
-
-	public PlayerFishEvent getFishEvent(Player player) {
-		if (this.fishEventMap.containsKey(player.getName())) {
-			return (PlayerFishEvent) this.fishEventMap.get(player.getName());
-		}
-		return null;
-	}
+    @EventHandler
+    public void onPlayerFish(PlayerFishEvent e){
+        Player p = e.getPlayer();
+        if(p.getItemInHand().getType().equals(Material.FISHING_ROD) 
+                && p.getItemInHand().hasItemMeta()){
+            ItemMeta im = p.getItemInHand().getItemMeta();
+            if(im.hasLore() && im.hasDisplayName() && im.hasEnchants()){
+                if(im.getDisplayName().equalsIgnoreCase(ChatColor.RED + "Grappling Hook Perk")
+                        && im.getLore().contains(ChatColor.DARK_PURPLE + p.getName())
+                        && im.hasEnchant(Enchantment.DURABILITY)){
+                    if(p.hasPermission("perks.item.hookshot")){
+                        if(e.getState().equals(PlayerFishEvent.State.IN_GROUND)
+                                || e.getState().equals(PlayerFishEvent.State.CAUGHT_ENTITY)){
+                            Location dest = e.getHook().getLocation();
+                            dest.setPitch(p.getLocation().getPitch());
+                            dest.setYaw(p.getLocation().getYaw());
+//                            System.out.print(dest.toString());
+//                            p.setVelocity(VelocityUtil.calculateVelocity(p.getLocation().toVector(), dest.toVector(), 6));
+                            p.teleport(dest);
+                        }
+                    }else{
+                        p.sendMessage(scd + "Sorry, you cannot use that perk item!");
+                        p.getInventory().remove(p.getItemInHand());
+                    }
+                }
+            }
+        }
+    }
 }
