@@ -24,9 +24,6 @@
 package com.mcmiddleearth.perks.listeners;
 
 import static com.mcmiddleearth.perks.MCMEPerks.scd;
-import com.mcmiddleearth.perks.utils.VelocityUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,8 +40,6 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author Dallen
  */
 public class GrapplingHookListener implements Listener {
-
-    ArrayList<String> Lines = new ArrayList<>();
 
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent e){
