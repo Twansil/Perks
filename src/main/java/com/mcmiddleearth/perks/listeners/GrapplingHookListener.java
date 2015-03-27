@@ -24,7 +24,6 @@
 package com.mcmiddleearth.perks.listeners;
 
 import static com.mcmiddleearth.perks.MCMEPerks.scd;
-import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
