@@ -28,6 +28,7 @@ import static com.mcmiddleearth.perks.MCMEPerks.toggle;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -49,23 +50,30 @@ public class ItemListener implements Listener {
 	@EventHandler
 	private void itemClick(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
+Logger.getGlobal().info("1");
 		if (event.hasItem() && (event.getAction().equals(Action.RIGHT_CLICK_AIR) 
 				|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-				&& p.getItemInHand().getItemMeta().hasDisplayName() 
+				&& p.getItemInHand()!=null
+                                && p.getItemInHand().hasItemMeta()
+                                && p.getItemInHand().getItemMeta().hasDisplayName() 
 				&& p.getItemInHand().getItemMeta().hasLore() 
 				&& toggle) {
+Logger.getGlobal().info("2");
 			ItemMeta itm = p.getItemInHand().getItemMeta();
 			if (itm.getLore().toString().contains(p.getName())) {
 				
+Logger.getGlobal().info("3");
 				String perk = itm.getDisplayName();
 				String perknode = ChatColor.stripColor(perk
 						.replace(" Perk", "").toLowerCase());
 				
+Logger.getGlobal().info("4");
 				if (p.hasPermission("perks.item." + perknode)) {
 					if(perknode.equals("jockey")){
 						JockeyListener.jockey(event);
 						event.setCancelled(true);
 					}
+Logger.getGlobal().info("5");
 					if(perknode.equals("grappling hook")){
 						event.setCancelled(false);
 					} else {
