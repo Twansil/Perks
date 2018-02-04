@@ -23,63 +23,112 @@
  */
 package com.mcmiddleearth.perks.listeners;
 
-import static com.mcmiddleearth.perks.MCMEPerks.prim;
-import static com.mcmiddleearth.perks.MCMEPerks.scd;
+import com.mcmiddleearth.perks.PerkManager;
+import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.perks.JockeyPerk;
+import com.mcmiddleearth.perks.perks.Perk;
+import com.mcmiddleearth.perks.permissions.PermissionData;
+import java.util.logging.Logger;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class JockeyListener implements Listener{
 	
-	public static void jockey(PlayerInteractEvent event) {
-		Player p = event.getPlayer();
-		if(p.isInsideVehicle()){
-			p.getVehicle().eject();
-			p.sendMessage(scd + "You have been ejected!");
-		} else { 
-			Entity ride = null;
-			for (Entity e : event.getPlayer()
-					.getNearbyEntities(3, 3, 3)) {
-				if (e instanceof Player) {
-					if (!e.isInsideVehicle()) {
-						ride = e;
-					}
-				}
-			}
-			if (ride != null) {
-				Player q = (Player) ride;
-				if(!q.hasPermission("perks.antijockey")){
-					ride.setPassenger(p);
-					p.sendMessage(prim + "Now riding "+ scd + q.getName() + prim + "!");
-				} else {
-					p.sendMessage(scd + "You cannot ride that player!");
-				}
-			} else {
-				p.sendMessage(scd + "There are no nearby players to ride!");
-			}
-		}
-	}
+        
+        @EventHandler
+        public void playerInteractPlayer(PlayerInteractEntityEvent event) {
+//Logger.getGlobal().info("p interact p");
+            if(!(event.getHand().equals(EquipmentSlot.HAND)
+                    && event.getRightClicked() instanceof Player)) {
+                return;
+            }
+            //Eject a jockey by right-clicking at him
+            if(event.getRightClicked().isInsideVehicle()){
+                Player jockey = (Player) event.getRightClicked();
+                if(jockey.getVehicle() instanceof Player){
+                    Player ride = (Player) jockey.getVehicle();
+                    if(ride.equals(event.getPlayer())){
+                        event.setCancelled(true);
+//Logger.getGlobal().info("p interact p - unjockey other");
+                        unjockey(jockey);
+                    }
+                }
+                return;
+            }
+            //Unjockey from another player by right-clicking at him
+            Player jockey = event.getPlayer();
+            if(jockey.isInsideVehicle() && (jockey.getVehicle() instanceof Player)){
+                event.setCancelled(true);
+//Logger.getGlobal().info("p interact p - unjockey self");
+                unjockey(jockey);
+                return;
+            }
+            
+            //Jockey another player by right-clicking at him
+            if(!jockey.isInsideVehicle() 
+                    && jockey.getInventory().getItemInMainHand().getType()
+                             .equals(JockeyPerk.getItemMaterial())) {
+                event.setCancelled(true);
+                Perk perk = PerkManager.forName("jockey");
+                if(!perk.isEnabled()) {
+                    PerksPlugin.getMessageUtil().sendErrorMessage(jockey, "Jockey perk is not enabled.");
+                    return;
+                }
+                if((!PermissionData.isAllowed(jockey, perk))) {
+                    PerksPlugin.getMessageUtil().sendErrorMessage(jockey, "Jockey perk is not given to you.");
+                    return;
+                }
+            /*Entity ride = null;
+            /*for (Entity e : jockey.getNearbyEntities(3, 3, 3)) {
+                    if (e instanceof Player) {
+                            if (!e.isInsideVehicle()) {
+                                    ride = e;
+                                    break;
+                            }
+                    }
+            }
+            if (ride != null) {*/
+                    Player q = (Player) event.getRightClicked();//ride;
+                    if(!q.hasPermission(JockeyPerk.getAntiJockeyPermission())){
+                            q.addPassenger(jockey);
+                            PerksPlugin.getMessageUtil().sendInfoMessage(jockey,"Now riding "
+                                    + PerksPlugin.getMessageUtil().STRESSED + q.getName() 
+                                    + PerksPlugin.getMessageUtil().INFO + "!");
+                    } else {
+                            PerksPlugin.getMessageUtil().sendErrorMessage(jockey,"You cannot ride that player!");
+                    }
+            /*} else {
+                    PerksPlugin.getMessageUtil().sendInfoMessage(jockey,"There are no nearby players to ride!");
+            }*/
+            }
+        }
 	
-	@EventHandler
-	private void eject(PlayerInteractEntityEvent event){
+        private void unjockey(Player jockey) {
+            jockey.getVehicle().eject();
+            PerksPlugin.getMessageUtil().sendInfoMessage(jockey,"You have been ejected!");
+        }
+        
+	/*@EventHandler(priority = EventPriority.LOW)
+	public void ejectOther(PlayerInteractEntityEvent event){
 		if(event.getRightClicked() instanceof Player
 				&& event.getRightClicked().isInsideVehicle()){
 			Player jockey = (Player) event.getRightClicked();
 			if(jockey.getVehicle() instanceof Player){
 				Player ride = (Player) jockey.getVehicle();
 				if(ride.equals(event.getPlayer())){
-					jockey.getVehicle().eject();
-					jockey.sendMessage(scd + "You have been ejected!");
+                                        unjockey(jockey);
 				}
 			}
 		}
-	}
+	}*/
 	
 	@EventHandler
 	public void riderQuit(PlayerQuitEvent event) {

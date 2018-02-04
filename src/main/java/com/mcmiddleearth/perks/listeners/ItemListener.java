@@ -1,136 +1,151 @@
 /*
- * Copyright (c) 2015 dags_
+ * Copyright (C) 2017 MCME
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- * 
- * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.mcmiddleearth.perks.listeners;
 
-import static com.mcmiddleearth.perks.MCMEPerks.scd;
-import static com.mcmiddleearth.perks.MCMEPerks.toggle;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.perks.ItemPerk;
+import com.mcmiddleearth.perks.permissions.PermissionData;
 import java.util.logging.Logger;
+import org.bukkit.Material;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 /**
  * 
- * @author dags_ <dags@dags.me>
+ * @author Eriol_Eandur
  */
 
 public class ItemListener implements Listener {
 
-	@EventHandler
-	private void itemClick(PlayerInteractEvent event) {
-		Player p = event.getPlayer();
-Logger.getGlobal().info("1");
-		if (event.hasItem() && (event.getAction().equals(Action.RIGHT_CLICK_AIR) 
-				|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-				&& p.getItemInHand()!=null
-                                && p.getItemInHand().hasItemMeta()
-                                && p.getItemInHand().getItemMeta().hasDisplayName() 
-				&& p.getItemInHand().getItemMeta().hasLore() 
-				&& toggle) {
-Logger.getGlobal().info("2");
-			ItemMeta itm = p.getItemInHand().getItemMeta();
-			if (itm.getLore().toString().contains(p.getName())) {
-				
-Logger.getGlobal().info("3");
-				String perk = itm.getDisplayName();
-				String perknode = ChatColor.stripColor(perk
-						.replace(" Perk", "").toLowerCase());
-				
-Logger.getGlobal().info("4");
-				if (p.hasPermission("perks.item." + perknode)) {
-					if(perknode.equals("jockey")){
-						JockeyListener.jockey(event);
-						event.setCancelled(true);
-					}
-Logger.getGlobal().info("5");
-					if(perknode.equals("grappling hook")){
-						event.setCancelled(false);
-					} else {
-						event.setCancelled(true);
-						PotionEffectType effect = getEffect(perk).getType();
-						Collection<PotionEffect> activeEffects = p.getActivePotionEffects();
-						if (activeEffects.toString().contains(effect.getName())) {
-							p.removePotionEffect(effect);
-							if(effect.getName().contains("SLOW") && activeEffects.toString().contains("SLOW")){
-								p.removePotionEffect(PotionEffectType.SLOW_DIGGING);
-							}
-						} else {
-							p.addPotionEffects(addPotionEffect(p, perk));
-						}
-					}
-				}
-			}else {
-                                if (p.getItemInHand().getItemMeta().getDisplayName().contains(" Perk")) {
-                                        p.sendMessage(scd + "Sorry, that is not your perk item!");
-                                        p.getInventory().remove(p.getItemInHand());
-                                }
-			}
-		} else {
-			if (!toggle) {
-				p.sendMessage(scd + "Sorry, perks have been disabled!");
-			}
-		}
-	}
+    private final ItemPerk perk;
+    
+    public ItemListener(ItemPerk perk) {
+        this.perk = perk;
+    }
 
-	private Collection<PotionEffect> addPotionEffect(Player p, String name) {
-		Collection<PotionEffect> PES = new ArrayList<PotionEffect>();
-		PotionEffect ptn = new PotionEffect(PotionEffectType.HEAL, 0, 0);
-		PotionEffect ptn1 = new PotionEffect(PotionEffectType.HEAL, 0, 0);
-		ptn = getEffect(name);
-		if (ptn.getType().equals(PotionEffectType.SLOW)) {
-			ptn1 = new PotionEffect(PotionEffectType.SLOW_DIGGING, 300, 10);
-			PES.add(ptn1);
-		}
-		PES.add(ptn);
-		return PES;
-	}
+    private boolean checkForItem(Player p) {
+        if(!perk.isEnabled()) {
+            PerksPlugin.getMessageUtil().sendErrorMessage(p,perk.getName()+" perk is not enabled.");
+            perk.removeItems(p);
+            return false;
+        }
+        if((!PermissionData.isAllowed(p, perk))) {
+            PerksPlugin.getMessageUtil().sendErrorMessage(p,perk.getName()+" is not given to you.");
+            perk.removeItems(p);
+            return false;
+        }
+        //perk.check(p);
+        return true;
+    }
 
-	private PotionEffect getEffect(String name) {
-		PotionEffect ptn = new PotionEffect(PotionEffectType.HEAL, 0, 0);
-		if (name.contains("Jump")) {
-			ptn = new PotionEffect(PotionEffectType.JUMP, 600, 4);
-		}
-		if (name.contains("Sprint")) {
-			ptn = new PotionEffect(PotionEffectType.SPEED, 600, 2);
-		}
-		if (name.contains("SlowMo")) {
-			ptn = new PotionEffect(PotionEffectType.SLOW, 300, 3);
-		}
-		if (name.contains("Dizzy")) {
-			ptn = new PotionEffect(PotionEffectType.CONFUSION, 300, 5);
-		}
-		return ptn;
-	}
+    // Checks if user has permission to use an item. Otherwise removes all elytras from his inventory.
+    @EventHandler
+    public void blockItemClick(InventoryClickEvent event) {
+//Logger.getGlobal().info("Item block click test: "+event.getCurrentItem());
+//Logger.getGlobal().info("Clicked Inventory: "+event.getClickedInventory().getName()+"   "+event.getClickedInventory().getHolder().toString());
+        if(!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+        Player p = (Player) event.getWhoClicked();
+        if(!(event.getCurrentItem()!=null
+                && event.getCurrentItem().getType().equals(perk.getItemMaterial()))) {
+            return;
+        }
+Logger.getGlobal().info("Item block click: "+perk.getItemMaterial());
+        if(!checkForItem(p)) {
+            event.setCancelled(true);
+        }
+        
+    }
+    
+    @EventHandler
+    public void blockItemDrag(InventoryDragEvent event) {
+        if(!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+        Player p = (Player) event.getWhoClicked();
+        if(!(event.getCursor()!=null
+                && event.getCursor().getType().equals(perk.getItemMaterial()))) {
+            return;
+        }
+Logger.getGlobal().info("Item block drag: "+perk.getItemMaterial());
+        if(!checkForItem(p)) {
+            event.setCancelled(true);
+            event.setCursor(new ItemStack(Material.AIR));
+        }
+    }
+    
+    @EventHandler
+    public void blockItemOpen(InventoryOpenEvent event) {
+        if(!(event.getPlayer() instanceof Player)) {
+            return;
+        }
+Logger.getGlobal().info("Item block open: "+perk.getItemMaterial());
+        perk.check((Player) event.getPlayer());
+    }
+    
+    @EventHandler
+    public void blockItemSwap(PlayerSwapHandItemsEvent event) {
+        PlayerInventory inv = event.getPlayer().getInventory();
+        if(!((inv.getItemInMainHand()!=null && inv.getItemInMainHand().getType().equals(perk.getItemMaterial()))
+                ||(inv.getItemInOffHand()!=null && inv.getItemInOffHand().getType().equals(perk.getItemMaterial())))) {
+            return;
+        }
+Logger.getGlobal().info("Item block swap hand: "+perk.getItemMaterial());
+        checkForItem(event.getPlayer());
+    }
+    
+    @EventHandler
+    public void blockItemHeld(PlayerItemHeldEvent event) {
+        PlayerInventory inv = event.getPlayer().getInventory();
+        ItemStack oldItem = inv.getItem(event.getPreviousSlot());
+        ItemStack newItem = inv.getItem(event.getNewSlot());
+        if(!((oldItem!=null && oldItem.getType().equals(perk.getItemMaterial()))
+                ||(newItem!=null && newItem.getType().equals(perk.getItemMaterial())))) {
+            return;
+        }
+Logger.getGlobal().info("Item block change held: "+perk.getItemMaterial());
+        checkForItem(event.getPlayer());
+    }
+   
+    @EventHandler
+    public void blockItemUse(PlayerInteractEvent event) {
+        Player p = (Player) event.getPlayer();
+        PlayerInventory inv = p.getInventory();
+        if(!((inv.getItemInMainHand()!=null && inv.getItemInMainHand().getType().equals(perk.getItemMaterial()))
+                ||(inv.getItemInOffHand()!=null && inv.getItemInOffHand().getType().equals(perk.getItemMaterial())))) {
+            return;
+        }
+Logger.getGlobal().info("Item block use: "+perk.getItemMaterial());
+        if(!checkForItem(p)) {
+            event.setCancelled(true);
+        }
+    }
 
+    
+    
 }

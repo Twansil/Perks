@@ -1,80 +1,21 @@
 name: MCMEPerks
-main: com.mcmiddleearth.perks.MCMEPerks
-version: 0.7.1
-authors: [daggs, meggawatts]
+main: com.mcmiddleearth.perks.PerksPlugin
+version: 2.0
+authors: [daggs, meggawatts, Eriol_Eandur]
+depend: [PluginUtils]
 
 commands:
-   mount:
-      description: Mount a horse!
-      usage: /mount
-      permission: perks.user
-      permission-message: Sorry, you don't have don't have permission to use that command.
    perk:
-      description: Get a perk item.
-      usage: /perk [perk type]
+      description: command to manage and use perks
+      usage: /perk
       permission: perks.user
-      permission-message: Sorry, you don't have don't have permission to use that command.
-   walk:
-      description: Toggle walk speed.
-      usage: /walk
-      permission: perks.walk
-      permission-message: Sorry, you don't have don't have permission to use that command.
-   perkstoggle:
-      description: Toggle perks on/off.
-      usage: /perkstoggle
-      permission: perks.admin
       permission-message: Sorry, you don't have don't have permission to use that command.
 permissions:
-  perks.premium:
-    default: op
-    children:
-      perks.mount: true
-      perks.tag: true
-      perks.item.jump: true
-      perks.item.sprint: true
-      perks.item.dizzy: true
-      perks.item.slowmo: true
-      perks.item.hookshot: true
-      perks.item.jockey: true
   perks.user:
-    default: true
-  perks.walk:
-    default: true
+      default: op
   perks.admin:
-    default: op
+      default: op
+      children:
+          perks.user: true
   perks.antijockey:
-    default: op
-  perks.tag:
-    default: op
-  perks.mount:
-    default: op
-  perks.item.jump:
-    default: op
-  perks.item.sprint:
-    default: op
-  perks.item.dizzy:
-    default: op
-  perks.item.slowmo:
-    default: op
-  perks.item.hookshot:
-    default: op
-  perks.item.jockey:
-    default: op
-  perks.pack.all:
-    default: op
-    children:
-      perks.tag: true
-      perks.mount: true
-      perks.item.jump: true
-      perks.item.sprint: true
-      perks.item.dizzy: true
-      perks.item.slowmo: true
-      perks.item.hookshot: true
-  perks.pack.dd092013:
-    default: op
-    children:
-      perks.item.sprint: true
-      perks.item.jump: true
-      perks.item.dizzy: true
-      perks.item.slowmo: true
-      perks.item.hookshot: true
+      default: op

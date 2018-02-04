@@ -1,12 +1,4 @@
-Settings:
-  Enabled: true
-  PerksItemID: 266
-  WalkSpeed: 0.7
-  DonarTagColor: YELLOW
-Perks:
-  - Sprint
-  - Jump
-  - Dizzy
-  - SlowMo
-  - HookShot
-  - Jockey
+settings:
+    enabled: true
+update:
+    donor: https://www.mcmiddleearth.com/tools/printdonations.php
