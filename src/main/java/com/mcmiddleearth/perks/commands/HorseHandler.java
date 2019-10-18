@@ -19,7 +19,6 @@ package com.mcmiddleearth.perks.commands;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.HorsePerk;
 import com.mcmiddleearth.perks.perks.Perk;
-import com.mcmiddleearth.perks.perks.SetOnFirePerk;
 import com.mcmiddleearth.pluginutil.NumericUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

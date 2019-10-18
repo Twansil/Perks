@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
@@ -74,10 +75,19 @@ public class PotionEffectPerk extends Perk {
         player.getInventory().addItem(resultItem);
     }
     
-    public void giveEffect(Player player) {
+    public void giveEffect(final Player player) {
         for(PotionEffectData data:effectData) {
             player.addPotionEffect(data.getPotionEffect(), true);
-Logger.getGlobal().info("Effect: "+ data.type+"    Amplifier: "+data.amplifier+"     Duration: "+data.duration);
+//Logger.getGlobal().info("Effect: "+ data.type+"    Amplifier: "+data.amplifier+"     Duration: "+data.duration);
+
+//Logger.getGlobal().info(""+player.hasPotionEffect(data.type));
+            final PotionEffectData dataF = data;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+//Logger.getGlobal().info(""+player.hasPotionEffect(dataF.type));
+                }
+            }.runTaskLater(PerksPlugin.getInstance(),1);
             player.getWorld().playSound(player.getLocation(), data.getWorldSound(),1,1);
             for(Sound sound: data.getPlayerSounds()) {
                 player.playSound(player.getLocation(), sound, 1, 0);

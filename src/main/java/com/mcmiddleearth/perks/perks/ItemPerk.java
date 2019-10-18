@@ -21,7 +21,6 @@ import com.mcmiddleearth.perks.commands.ItemHandler;
 import com.mcmiddleearth.perks.listeners.ItemListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.Permissions;
-import java.util.logging.Logger;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -105,7 +104,7 @@ public class ItemPerk extends Perk {
     }
     
     public void removeItems(Player p) {
-Logger.getGlobal().info("Removing "+itemMaterial.name()+" from "+p.getName());
+//Logger.getGlobal().info("Removing "+itemMaterial.name()+" from "+p.getName());
         PlayerInventory inv = p.getInventory();
         inv.remove(itemMaterial);
         ItemStack[]armor = inv.getArmorContents();

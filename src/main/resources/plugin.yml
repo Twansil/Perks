@@ -1,15 +1,16 @@
-name: MCMEPerks
+name: ${project.artifactId}
 main: com.mcmiddleearth.perks.PerksPlugin
-version: 2.0
+version: ${project.version}
 authors: [daggs, meggawatts, Eriol_Eandur]
 depend: [PluginUtils]
+api-version: 1.13
 
 commands:
    perk:
       description: command to manage and use perks
       usage: /perk
       permission: perks.user
-      permission-message: Sorry, you don't have don't have permission to use that command.
+      permission-message: Sorry, you don't have permission to use that command.
 permissions:
   perks.user:
       default: op

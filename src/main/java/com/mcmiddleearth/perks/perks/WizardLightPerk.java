@@ -25,12 +25,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -142,24 +143,26 @@ public class WizardLightPerk extends Perk {
                     WizardLight light = lights.get(player);
                     if(light.isValid()) {
                         light.refresh();
-                        Vector aim = player.getEyeLocation().toVector()
+                        /*Vector aim = player.getEyeLocation().toVector()
                                            .add(player.getLocation().getDirection().multiply(light.getDistance()))
-                                           .add(new Vector(0,1,0));
+                                           .add(new Vector(0,1,0));*/
+                        Vector aim = player.getEyeLocation().toVector().add(new Vector(0,1,0));
+                        Vector direction = player.getLocation().getDirection();
+                        for(int i=0; i<light.getDistance();i++) {
+                            Vector newAim = aim.clone().add(direction);
+                            if(!newAim.toLocation(player.getWorld()).getBlock().isEmpty()) {
+                                break;
+                            }
+                            aim = newAim;
+                        }
                         light.setAim(aim);
-//Logger.getGlobal().info("aim "+aim.toString());                        
-                        /*Vector vel = aim.subtract(light.getLocation().toVector());
-                        //Vector vel = light.getVelocity()
-                        //              .add((vector2.subtract(light.getVelocity())).multiply(a));
-                        //light.setVelocity(vector2.multiply(0.1));
-                        vel = vel.multiply(a);
-                        light.setVelocity((vel.length()<Math.min(b, 1)?vel
-                                                           :vel.normalize().multiply(Math.min(b, 1))));*/
+                        //2.1 light.update();
                     } else {
                         unsummonLight(player);
                     }
                 }
             }
-        }.runTaskTimer(PerksPlugin.getInstance(), 1, 3);
+        }.runTaskTimer(PerksPlugin.getInstance(), 1, 5);
     }
     
     @Override
@@ -189,6 +192,11 @@ public class WizardLightPerk extends Perk {
         
         private int intensity = 1;
         
+        private List<Location> blockChanges = new ArrayList<>();
+        
+        private List<Vector> relativeLocations = new ArrayList<>();
+        
+        private List<Player> players = new ArrayList<>();
         
         private Location aim;
         
@@ -199,19 +207,33 @@ public class WizardLightPerk extends Perk {
             entities = new HashMap<>();
             this.aim = loc;
             summonEntity(loc,0,0,0,Material.BEACON);
+            //2.1 relativeLocations.add(new Vector(0,0,0));
             //entity.setFireTicks(Integer.MAX_VALUE);
         }
         
         private void summonEntity(Location loc, double x, double y, double z, Material mat) {
             Vector relativeLoc = new Vector(x,y,z);
             Location locC = loc.clone();
-            Item entity = loc.getWorld().dropItemNaturally(locC.add(relativeLoc), new ItemStack(mat));
+            entities.put(spawnItem(locC.add(relativeLoc),mat), relativeLoc);
+        }
+        
+        private Entity spawnItem(Location loc, Material mat) {
+            Item entity = loc.getWorld().dropItemNaturally(loc, new ItemStack(mat));
             entity.setItemStack(new ItemStack(mat));
             entity.setPickupDelay(600*20);
             //setInvisible();
             entity.setSilent(true);
             entity.setGravity(false);
-            entities.put(entity, relativeLoc);
+            return entity;
+        }
+        
+        private Entity spawnMob(Location loc, Material mat) {
+            Entity entity = loc.getWorld().spawn(loc, Bat.class);
+            entity.setSilent(true);
+            entity.setGravity(false);
+            entity.setFireTicks(Integer.MAX_VALUE);
+            entity.setInvulnerable(true);
+            return entity;
         }
         
         public void unsummon() {
@@ -219,15 +241,50 @@ public class WizardLightPerk extends Perk {
                 entity.remove();
             }
             entities.clear();
+            //2.1 clearBlockChanges();
+            //2.1 relativeLocations.clear();
+        }
+        
+        private void clearBlockChanges() {
+            for(Location loc: blockChanges) {
+                for(Player player: players) {
+                    if(player!=null && player.isOnline()) {
+                        player.sendBlockChange(loc, loc.getBlock().getBlockData());
+                    }
+                }
+            }
+            players.clear();
+            blockChanges.clear();
+        }
+        
+        public void update() {
+            clearBlockChanges();
+            List<Player> all = aim.getWorld().getPlayers();
+            for(Player player: all) {
+                if(player.getLocation().distance(aim)<250) {
+                    players.add(player);
+                }
+            }
+            Location current = entities.keySet().iterator().next().getLocation();
+            for(Vector relLoc: relativeLocations) {
+                blockChanges.add(current.clone().add(relLoc));
+            }
+            for(Location loc: blockChanges) {
+                for(Player player: players) {
+                    if(player!=null && player.isOnline()) {
+                        player.sendBlockChange(loc, Bukkit.createBlockData(Material.BEACON));
+                    }
+                }
+            }
         }
         
         public void setAim(Vector aim) {
             this.aim = aim.toLocation(this.aim.getWorld());
             for(Entity entity: entities.keySet()) {
                 Vector temp = aim.clone();
-                double distance = temp.subtract(entity.getLocation().toVector()).length();
-//Logger.getGlobal().info("tdist: "+teleportDistance+ "   dist: "+distance);                    
-                if(distance>teleportDistance) {
+                double dist = temp.subtract(entity.getLocation().toVector()).length();
+//Logger.getGlobal().info(" dist: "+teleportDistance+ "   dist: "+distance);                    
+                if(dist>teleportDistance) {
 //Logger.getGlobal().info("teleport");
                     entity.teleport(this.aim.toVector().add(entities.get(entity)).toLocation(this.aim.getWorld()));
                 } else {
@@ -268,6 +325,24 @@ public class WizardLightPerk extends Perk {
                 this.intensity = intensity;
                 //if(intensity==1) {
                 summonEntity(aim,0,0,0,Material.BEACON);
+                /*2.1 relativeLocations.add(new Vector(0,0,0));
+                if(intensity>1) {
+                    if(intensity<8){//4
+                        createIkosaederLoc(intensity);
+                    } else if(intensity<10){//6
+                        //summonEntity(aim,0,0,0);
+                        createIkosaederLoc(intensity);
+                        createDodecaederLoc(intensity);
+                    } else if(intensity<8){
+                        createIkosaederLoc(intensity/2);
+                        createIkosaederLoc(intensity);
+                        createDodecaederLoc(intensity);
+                    } else {
+                        createIkosaederLoc(intensity/2);
+                        createIkosaederLoc(intensity);
+                        createDodecaederLoc(intensity);
+                    }
+                }*/
                 if(intensity>1) {
                     if(intensity<4){
                         createIkosaeder(intensity);
@@ -290,6 +365,62 @@ public class WizardLightPerk extends Perk {
             }
         }
         
+        private void createDodecaederLoc(double size) {
+            double f = 2.6;
+            double a = size/2;
+            double b = a*goldenRatio;
+            double c = (a+2*b)/f;
+            double d = b/f;
+            double e = (a+b)/f;
+            
+            relativeLocations.add(new Vector( 0,  c,  d));
+            relativeLocations.add(new Vector( 0,  c, -d));
+            relativeLocations.add(new Vector( 0, -c,  d));
+            relativeLocations.add(new Vector( 0, -c, -d));
+
+            relativeLocations.add(new Vector( -d,  0,  c));
+            relativeLocations.add(new Vector(  d,  0,  c));
+            relativeLocations.add(new Vector( -d,  0, -c));
+            relativeLocations.add(new Vector(  d,  0, -c));
+
+            relativeLocations.add(new Vector(  c, -d,  0));
+            relativeLocations.add(new Vector(  c,  d,  0));
+            relativeLocations.add(new Vector( -c, -d,  0));
+            relativeLocations.add(new Vector( -c,  d,  0));
+            
+            relativeLocations.add(new Vector(  e,  e,  e));
+            relativeLocations.add(new Vector(  e,  e, -e));
+            relativeLocations.add(new Vector(  e, -e,  e));
+            relativeLocations.add(new Vector( -e,  e,  e));
+            relativeLocations.add(new Vector(  e, -e, -e));
+            relativeLocations.add(new Vector( -e, -e,  e));
+            relativeLocations.add(new Vector( -e,  e, -e));
+            relativeLocations.add(new Vector( -e, -e, -e));
+        }
+        
+        private void createIkosaederLoc(double size) {
+            double a = size/2;
+            double b= a*goldenRatio;
+            
+            relativeLocations.add(new Vector( -a, -b, 0));
+            relativeLocations.add(new Vector(  a, -b, 0));
+            relativeLocations.add(new Vector( -a,  b, 0));
+            relativeLocations.add(new Vector(  a,  b, 0));
+
+            relativeLocations.add(new Vector(  0, -a,  b));
+            relativeLocations.add(new Vector(  0,  a,  b));
+            relativeLocations.add(new Vector(  0, -a, -b));
+            relativeLocations.add(new Vector(  0,  a, -b));
+
+            relativeLocations.add(new Vector(  -b,  0, -a));
+            relativeLocations.add(new Vector(  -b,  0,  a));
+            relativeLocations.add(new Vector(   b,  0, -a));
+            relativeLocations.add(new Vector(   b,  0,  a));
+        }
+        /*public Location getLocation() {
+            return entity.getLocation();
+        }*/
+
         private void createDodecaeder(double size) {
             double f = 2.6;
             double a = size/2;
@@ -342,9 +473,6 @@ public class WizardLightPerk extends Perk {
             summonEntity(aim,   b,  0, -a,Material.SEA_LANTERN);
             summonEntity(aim,   b,  0,  a,Material.SEA_LANTERN);
         }
-        /*public Location getLocation() {
-            return entity.getLocation();
-        }*/
         
         public boolean isValid() {
             for(Entity entity: entities.keySet()) {

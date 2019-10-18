@@ -18,7 +18,6 @@
 package com.mcmiddleearth.perks.listeners;
 
 import com.mcmiddleearth.perks.perks.WizardLightPerk;
-import org.bukkit.Material;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

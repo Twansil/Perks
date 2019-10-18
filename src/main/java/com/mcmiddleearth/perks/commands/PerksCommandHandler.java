@@ -20,8 +20,7 @@ import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import lombok.Getter;
-import lombok.Setter;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
