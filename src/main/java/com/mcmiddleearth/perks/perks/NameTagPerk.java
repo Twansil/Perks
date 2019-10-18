@@ -71,24 +71,6 @@ public class NameTagPerk extends Perk {
         }
     }
     
-    /*@Override
-    public void enable() {
-        final Perk self = this;
-        nameTagUpdater = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for(Player player: Bukkit.getOnlinePlayers()) {
-                    if(PermissionData.isAllowed(player, self)) {
-                        setNameTag(player,true);
-                    } else {
-                        setNameTag(player,false);
-                    }
-                }
-            }
-        };
-        nameTagUpdater.runTaskTimer(PerksPlugin.getInstance(), 1, 1200);
-    }
-    */
     @Override
     public void disable() {
         for(Player player: Bukkit.getOnlinePlayers()) {
@@ -117,7 +99,7 @@ public class NameTagPerk extends Perk {
         team = board.getTeam(teamName);
         if(team==null) {
             team = board.registerNewTeam(teamName);
-Logger.getGlobal().info("TEAM: "+team);
+//Logger.getGlobal().info("TEAM: "+team);
             //team.setColor(nameTagColor);
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
             team.setPrefix(""+nameTagColor); 

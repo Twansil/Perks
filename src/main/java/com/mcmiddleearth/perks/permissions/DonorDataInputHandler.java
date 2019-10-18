@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -72,9 +73,9 @@ public class DonorDataInputHandler extends HttpTextInputHandler{
                 }
                 if(!uuid.equals("")) {
                     String donation = scanner.next();
+//Logger.getGlobal().info(donation);
                     donation = donation.substring(donation.indexOf("<td>")+4);
                     donation = "Donor_"+donation.substring(0,donation.indexOf("."));
-//Logger.getGlobal().info("donation: "+name+" "+uuid+" "+donation);
                     List<String> donationList = new ArrayList<>();
                     donationList.add(donation);
                     config.set(uuid, donationList);

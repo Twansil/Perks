@@ -2,3 +2,53 @@ settings:
     enabled: true
 update:
     donor: https://www.mcmiddleearth.com/tools/printdonations.php
+perks:
+  sit:
+    item: GHAST_TEAR
+    enabled: true
+  firework:
+    itemName: splendid firework
+    item: FIREWORK_ROCKET
+    itemQuantity: 64
+    enabled: true
+  fire:
+    defaultTicks: 200
+    maxTicks: 2000
+    enabled: true
+  name:
+    donorTagColor: YELLOW
+    enabled: true
+  light:
+    startDistance: 6
+    teleportDistance: 40
+    maxIntensity: 8
+    maxDuration: 12000
+    maxSpeed: 1
+    speedFactor: 0.1
+    item: STICK
+    enabled: true
+  ring:
+    itemName: Ring of Power
+    item: GOLD_NUGGET
+    enabled: true
+  elytra:
+    itemName: fluffy wings
+    item: ELYTRA
+    itemQuantity: 1
+    enabled: true
+  jockey:
+    antiJockeyPermission: perks.antijockey
+    item: LEAD
+    enabled: true
+  speed:
+    itemName: Boots of Speed
+    item: DIAMOND_BOOTS
+    amplifier: 4
+    enabled: true
+  jump:
+    itemName: Leggings of Jumping
+    item: DIAMOND_LEGGINGS
+    amplifier: 50
+    enabled: true
+  horse:
+    enabled: true

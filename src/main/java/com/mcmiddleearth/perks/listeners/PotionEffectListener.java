@@ -21,7 +21,6 @@ import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.perks.PotionEffectPerk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
-import java.util.logging.Logger;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

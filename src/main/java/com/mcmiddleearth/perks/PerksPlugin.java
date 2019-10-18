@@ -96,11 +96,11 @@ public class PerksPlugin extends JavaPlugin {
                                                  new ItemStack(Material.GOLD_NUGGET),
                                                  "Ring of Power",
                                                  new PotionEffectPerk.PotionEffectData("ring",PotionEffectType.INVISIBILITY,
-                                                         Sound.ENTITY_ENDERMEN_TELEPORT, Sound.ENTITY_WITHER_DEATH, Sound.ENTITY_ENDERMEN_STARE),
+                                                         Sound.ENTITY_ENDERMAN_TELEPORT, Sound.ENTITY_WITHER_DEATH, Sound.ENTITY_ENDERMAN_STARE),
                                                  new PotionEffectPerk.PotionEffectData("ring",PotionEffectType.CONFUSION,null),
                                                  new PotionEffectPerk.PotionEffectData("ring",PotionEffectType.BLINDNESS,null)));
         PerkManager.addPerk(new ItemPerk("elytra", Material.ELYTRA,"fluffy wings",1));
-        PerkManager.addPerk(new ItemPerk("firework", Material.FIREWORK,"splendid firework",64));
+        PerkManager.addPerk(new ItemPerk("firework", Material.FIREWORK_ROCKET,"splendid firework",64));
 
         this.updateConfigurationFile();
         

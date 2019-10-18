@@ -1,17 +1,17 @@
 ## YAML Template.
-CACTUS_6:
+minecraft:cactus[age=6]:
   Z: 0.2 
   Y: -0.5
   Yaw: 0
-CACTUS_7:
+minecraft:cactus[age=7]:
   X: -0.2
   Y: -0.5
   Yaw: 90
-CACTUS_8:
+minecraft:cactus[age=8]:
   Z: -0.2  
   Y: -0.5
   Yaw: 180
-CACTUS_9:
+minecraft:cactus[age=9]:
   X: 0.2
   Y: -0.5
   Yaw: 270

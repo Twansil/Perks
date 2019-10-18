@@ -29,12 +29,19 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Cake;
+import org.bukkit.block.data.type.Stairs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -90,12 +97,19 @@ public class SitPerk extends Perk {
         armor.setCustomName("Seat_Marker_remove_if found_without_a_player_mounted!");
     }
     
-    public static void sitUp(Player player) {
+    public static void sitUp(final Player player) {
         ArmorStand marker = armorStands.get(player);
         if(marker!=null) {
             if(player.isInsideVehicle() 
                     && player.getVehicle().equals(marker)) {
                 player.eject();
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.teleport(player.getLocation().getBlock()
+                                      .getRelative(BlockFace.UP, 5).getLocation());
+                    }
+                }.runTaskLater(PerksPlugin.getInstance(),10);
             }
             marker.remove();
         }
@@ -172,67 +186,72 @@ public class SitPerk extends Perk {
     }
     
     private static boolean isUnsolid(Block clicked) {
+        String name = clicked.getType().name();
+        if(name.contains("SAPLING")
+                || name.contains("SAPLING")
+                || name.contains("WALL_BANNER")
+                || name.contains("BUTTON")) {
+            return true;
+        }
         switch(clicked.getType()) {
-            case LONG_GRASS:
-            case SAPLING:
-            case YELLOW_FLOWER:
-            case RED_ROSE:
+            case GRASS:
+            case ROSE_RED:
             case RED_MUSHROOM:
             case BROWN_MUSHROOM:
-            case CROPS:
+            case WHEAT:
             case POTATO:
             case CARROT:
             case REDSTONE_WIRE:
             case TRIPWIRE_HOOK:
-            case NETHER_WARTS:
+            case NETHER_WART:
             case MELON_STEM:
             case PUMPKIN_STEM:
             case STRING:
             case FLOWER_POT:
             case WALL_SIGN:
-            case WEB:
+            case COBWEB:
             case DEAD_BUSH:
             case TORCH:
-            case REDSTONE_TORCH_ON:
-            case REDSTONE_TORCH_OFF:
+            case REDSTONE_TORCH:
             case LEVER:
-            case WOOD_BUTTON:
-            case STONE_BUTTON:
             case VINE:
-            case DOUBLE_PLANT:
+            case TALL_GRASS:
             case LADDER:
-            case RAILS:
+            case RAIL:
             case POWERED_RAIL:
             case ACTIVATOR_RAIL:
             case DETECTOR_RAIL:
-            case WALL_BANNER:
-            case CAKE_BLOCK:
-            case BEETROOT_BLOCK:
+            case CAKE:
+            case BEETROOT:
                 return true;
         }
         return false;
     }
     
     private static boolean isThreeQuarterBlock(Block clicked) {
+        String name = clicked.getType().name();
+        if(name.contains("WALL_HEAD")) {
+            return true;
+        }
         switch(clicked.getType()) {
-            case ENCHANTMENT_TABLE:
-            case ENDER_PORTAL_FRAME:
+            case ENCHANTING_TABLE:
+            case END_PORTAL_FRAME:
                 return true;
         }
         return false;
     }
     
     private static boolean isCarpet(Block clicked) {
+        String name = clicked.getType().name();
+        if(name.contains("CARPET")
+                || name.contains("PLATE")
+                || name.contains("WALL_BANNER")
+                || name.contains("BUTTON")) {
+            return true;
+        }
         switch(clicked.getType()) {
-            case CARPET:
-            case WOOD_PLATE:
-            case STONE_PLATE:
-            case IRON_PLATE:
-            case GOLD_PLATE:
-            case DIODE_BLOCK_OFF:
-            case DIODE_BLOCK_ON:
-            case REDSTONE_COMPARATOR_ON:
-            case REDSTONE_COMPARATOR_OFF:
+            case REPEATER:
+            case COMPARATOR:
                 return true;
         }
         return false;
@@ -241,97 +260,80 @@ public class SitPerk extends Perk {
     private static boolean isQuarterBlock(Block clicked) {
         switch(clicked.getType()) {
             case DAYLIGHT_DETECTOR:
-            case DAYLIGHT_DETECTOR_INVERTED:
                 return true;
         }
         return false;
     }
         
     private static boolean isHalfBlock(Block clicked) {
-        switch(clicked.getType()) {
-            case SKULL:
-            case BED_BLOCK:
-                return true;
-        }
-        if(clicked.getData()>7) {
-                return false;
-        }
-        if(clicked.getType().equals(Material.CAKE_BLOCK)
-                && clicked.getData()<5) {
+        String name = clicked.getType().name();
+        if((name.contains("HEAD") && !name.contains("WALL_HEAD"))
+                || name.contains("BED")) {
             return true;
         }
-        switch(clicked.getType()) {
-            case STEP:
-            case BED_BLOCK:
-            case WOOD_STEP:
-            case STONE_SLAB2:
-            case PURPUR_SLAB:
-                return true;
+        BlockData data = clicked.getBlockData();
+        if(((data instanceof Cake) && (((Cake)data).getBites()<5))
+            || (data instanceof Bisected) && (((Bisected)data).getHalf().equals(Bisected.Half.BOTTOM))) {
+            return true;
         }
         return false;
     }
     private static boolean isStairBlock(Block clicked) {
-        if(clicked.getData()>3) {
-            return false;
+        BlockData data = clicked.getBlockData();
+        return (data instanceof Stairs) 
+                && ((Stairs)data).getHalf().equals(Bisected.Half.BOTTOM);
         }
-        switch(clicked.getType()) {
-            case WOOD_STAIRS:
-            case SANDSTONE_STAIRS:
-            case BRICK_STAIRS:
-            case COBBLESTONE_STAIRS:
-            case SPRUCE_WOOD_STAIRS:
-            case JUNGLE_WOOD_STAIRS:
-            case BIRCH_WOOD_STAIRS:
-            case ACACIA_STAIRS:
-            case DARK_OAK_STAIRS:
-            case QUARTZ_STAIRS:
-            case RED_SANDSTONE_STAIRS:
-            case PURPUR_STAIRS:
-                return true;
-        }
-        return false;
-    }
-    
+
     private static float getStairYaw(Block clicked) {
-        switch(clicked.getData()) {
-            case 0:
-                return 90;
-            case 1:
-                return 270;
-            case 2:
-                return 180;
-            case 3:
-                return 0;
+        if(isStairBlock(clicked)) {
+            Stairs data = (Stairs) clicked.getBlockData();
+            switch(data.getFacing()) {
+                case NORTH:
+                    return 0;
+                case EAST:
+                    return 90;
+                case SOUTH:
+                    return 180;
+                case WEST:
+                    return 270;
+            }
         }
         return 0;
     }
     
     private static double stairShiftX(Block clicked) {
-        switch(clicked.getData()) {
-            case 0:
-                return -0.1;
-            case 1:
-                return 0.1;
+        if(isStairBlock(clicked)) {
+            Stairs data = (Stairs) clicked.getBlockData();
+            switch(data.getFacing()) {
+                case EAST:
+                    return -0.1;
+                case WEST:
+                    return 0.1;
+            }
         }
         return 0;
     }
     private static double stairShiftZ(Block clicked) {
-        switch(clicked.getData()) {
-            case 2:
-                return -0.1;
-            case 3:
-                return 0.1;
+        if(isStairBlock(clicked)) {
+            Stairs data = (Stairs) clicked.getBlockData();
+            switch(data.getFacing()) {
+                case SOUTH:
+                    return -0.1;
+                case NORTH:
+                    return 0.1;
+            }
         }
         return 0;
     }
     
     private static ConfigurationSection getConfigSection(Block clicked) {
-        ConfigurationSection section = config.getConfigurationSection(clicked.getType().name());
-        if(section == null) {
-            for(String key: config.getKeys(false)) {
-            }
-            section = config.getConfigurationSection(clicked.getType().name()+"_"+clicked.getData());
-        }
+        String data = clicked.getBlockData()
+                            .getAsString();
+                            /*.replace(":", "_")
+                            .replace("[","_")
+                            .replace("]","")
+                            .replace("=","");*/
+        ConfigurationSection section = config.getConfigurationSection(data);
         return section;
     }
     

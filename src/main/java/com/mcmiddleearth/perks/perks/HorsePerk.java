@@ -22,6 +22,7 @@ import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.Permissions;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
