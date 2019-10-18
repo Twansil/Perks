@@ -1,6 +1,6 @@
 name: MCMEPerks
 main: com.mcmiddleearth.perks.PerksPlugin
-version: 2.0
+version: 2.0.2
 authors: [daggs, meggawatts, Eriol_Eandur]
 depend: [PluginUtils]
 

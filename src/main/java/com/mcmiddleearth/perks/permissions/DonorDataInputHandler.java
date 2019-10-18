@@ -58,7 +58,7 @@ public class DonorDataInputHandler extends HttpTextInputHandler{
                 String uuid = scanner.next();
 //Logger.getGlobal().info("uuid "+uuid);
                 uuid = uuid.substring(uuid.indexOf("<td>")+4);
-                if(name.equals("")) {
+                if(uuid.equals("") && name.equals("")) {
                     scanner.next();
                     scanner.next();
                     continue;
@@ -72,9 +72,9 @@ public class DonorDataInputHandler extends HttpTextInputHandler{
                 }
                 if(!uuid.equals("")) {
                     String donation = scanner.next();
-//Logger.getGlobal().info(donation);
                     donation = donation.substring(donation.indexOf("<td>")+4);
                     donation = "Donor_"+donation.substring(0,donation.indexOf("."));
+//Logger.getGlobal().info("donation: "+name+" "+uuid+" "+donation);
                     List<String> donationList = new ArrayList<>();
                     donationList.add(donation);
                     config.set(uuid, donationList);
