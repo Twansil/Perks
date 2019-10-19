@@ -99,10 +99,12 @@ public class NameTagPerk extends Perk {
         team = board.getTeam(teamName);
         if(team==null) {
             team = board.registerNewTeam(teamName);
-//Logger.getGlobal().info("TEAM: "+team);
+//Logger.getGlobal().info("TEAM: "+team+" "+nameTagColor.name());
             //team.setColor(nameTagColor);
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
-            team.setPrefix(""+nameTagColor); 
+            //team.setPrefix("~"+nameTagColor); 
+            //team.setSuffix("~"); 
+            team.setColor(nameTagColor); 
         }
         check();
     }
