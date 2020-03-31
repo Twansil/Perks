@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -100,6 +101,15 @@ public class ItemListener implements Listener {
     
     @EventHandler
     public void blockItemOpen(InventoryOpenEvent event) {
+        if(!(event.getPlayer() instanceof Player)) {
+            return;
+        }
+//Logger.getGlobal().info("Item block open: "+perk.getItemMaterial());
+        perk.check((Player) event.getPlayer());
+    }
+    
+    @EventHandler
+    public void blockItemClose(InventoryCloseEvent event) {
         if(!(event.getPlayer() instanceof Player)) {
             return;
         }
