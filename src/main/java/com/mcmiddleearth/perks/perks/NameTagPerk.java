@@ -47,11 +47,7 @@ public class NameTagPerk extends Perk {
     public NameTagPerk() {
         super("name");
         board = Bukkit.getScoreboardManager().getMainScoreboard();
-        //objective = board.registerNewObjective("Donor", "CUSTOM");
-        //team.setPrefix(""+nameTagColor);
-        //objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        //setCommandHandler(new FireHandler(this, Permissions.USER.getPermissionNode()));
-        
+
         enable();
         setListener(new NameTagListener(this));
         
@@ -60,12 +56,8 @@ public class NameTagPerk extends Perk {
     public void setNameTag(Player player, boolean color) {
         if(team!=null) {
             if(color) {
-    //Logger.getGlobal().info("set donor tag for "+player.getDisplayName());
-                //player.setDisplayName(nameTagColor+ChatColor.stripColor(player.getDisplayName())+"Donor");
                 team.addPlayer(player);
-                //objective.getScore(player).setScore(10);
             } else {
-    //Logger.getGlobal().info("unset donor tag for "+player.getDisplayName());
                 team.removePlayer(player);
             }
         }
@@ -95,16 +87,11 @@ public class NameTagPerk extends Perk {
     
     @Override
     public final void enable() {
-        //board.clearSlot(DisplaySlot.BELOW_NAME);
         team = board.getTeam(teamName);
         if(team==null) {
             team = board.registerNewTeam(teamName);
-//Logger.getGlobal().info("TEAM: "+team+" "+nameTagColor.name());
-            //team.setColor(nameTagColor);
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
-            //team.setPrefix("~"+nameTagColor); 
-            //team.setSuffix("~"); 
-            team.setColor(nameTagColor); 
+            team.setColor(nameTagColor);
         }
         check();
     }

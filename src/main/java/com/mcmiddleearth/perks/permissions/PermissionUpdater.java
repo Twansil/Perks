@@ -26,20 +26,10 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class PermissionUpdater extends BukkitRunnable{
     
-    //ile creditUpdateFile = new File(PerksPlugin.getInstance().getDataFolder(),"creditUpdate.yml");
-    
     ConfigurationSection update = PerksPlugin.getInstance().getConfig().getConfigurationSection("update");
     
     @Override
     public void run() {
-        /*try {
-            YamlConfiguration config = new YamlConfiguration();
-            config.load(creditUpdateFile);
-            PermissionData.updateCredits(config);
-        } catch (IOException | InvalidConfigurationException ex) {
-            Logger.getLogger(PermissionUpdater.class.getName()).log(Level.SEVERE, "Error reading credit update file.");
-        }*/
         new DonorDataInputHandler(update.getString("donor"),2000).start();
     }
-    
 }

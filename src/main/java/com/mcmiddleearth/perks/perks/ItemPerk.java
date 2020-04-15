@@ -21,7 +21,6 @@ import com.mcmiddleearth.perks.commands.ItemHandler;
 import com.mcmiddleearth.perks.listeners.ItemListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.Permissions;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -36,15 +35,11 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class ItemPerk extends Perk {
     
-    @Getter
     private String itemName = PerksPlugin.getPerkString(this.getName(),
                                                              "itemName", null);
-
     private int itemQuantity = PerksPlugin.getPerkInt(this.getName(),
                                                              "itemAmount", -1);
     
-    
-    @Getter
     private final Material itemMaterial;
     
     public ItemPerk(String name, Material itemMaterial, String itemName, int quantity) {
@@ -93,7 +88,6 @@ public class ItemPerk extends Perk {
         //remoe elytras of all players
         for(Player p:Bukkit.getOnlinePlayers()) {
             removeItems(p);
-            //p.getInventory().g
         }
     }
 
@@ -104,7 +98,6 @@ public class ItemPerk extends Perk {
     }
     
     public void removeItems(Player p) {
-//Logger.getGlobal().info("Removing "+itemMaterial.name()+" from "+p.getName());
         PlayerInventory inv = p.getInventory();
         inv.remove(itemMaterial);
         ItemStack[]armor = inv.getArmorContents();
@@ -132,5 +125,12 @@ public class ItemPerk extends Perk {
         config.set("item", itemMaterial.name());
         config.set("itemQuantity", itemQuantity);
     }
-    
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public Material getItemMaterial() {
+        return itemMaterial;
+    }
 }

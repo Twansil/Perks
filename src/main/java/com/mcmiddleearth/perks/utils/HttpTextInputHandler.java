@@ -60,10 +60,8 @@ public abstract class HttpTextInputHandler {
                     try {
                         cancel();
                         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                            //DevUtil.log(connection.getURL().toString()+": "+connection.getResponseMessage());
                             handleTextInput(new BufferedReader(new InputStreamReader(connection.getInputStream())));
                         } else {
-                            //DevUtil.log(connection.getURL().toString()+": "+connection.getResponseMessage());
                             sendBadResponseError();
                         }
                         return;

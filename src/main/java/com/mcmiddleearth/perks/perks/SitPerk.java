@@ -19,13 +19,6 @@ package com.mcmiddleearth.perks.perks;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.listeners.SitListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -41,7 +34,13 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,11 +51,9 @@ public class SitPerk extends Perk {
     private static final Map<Player, ArmorStand> armorStands = new HashMap<>();
     
     private static YamlConfiguration config = new YamlConfiguration();
-    
     private static final File configFile = new File(PerksPlugin.getInstance().getDataFolder(),
                                                            "SitPerkConfiguration.yml");
     
-    @Getter
     private static Material item;
     
     public SitPerk() {
@@ -140,12 +137,8 @@ public class SitPerk extends Perk {
     private static Float getTurnAround(Location pLoc, Block clicked) {
         if(isStairBlock(clicked)) {
             return(getStairYaw(clicked));
-            //return  new Location(pLoc.getWorld(), pLoc.getX(), pLoc.getY(),pLoc.getZ(),
-              //                          getStairYaw(clicked), pLoc.getPitch());
         } else {
             return pLoc.getYaw()+180;
-            //return new Location(pLoc.getWorld(), pLoc.getX(), pLoc.getY(),pLoc.getZ(),
-              //                          pLoc.getYaw()+180, pLoc.getPitch());
         }
     }
     
@@ -195,7 +188,7 @@ public class SitPerk extends Perk {
         }
         switch(clicked.getType()) {
             case GRASS:
-            case ROSE_RED:
+            case RED_DYE:
             case RED_MUSHROOM:
             case BROWN_MUSHROOM:
             case WHEAT:
@@ -208,7 +201,12 @@ public class SitPerk extends Perk {
             case PUMPKIN_STEM:
             case STRING:
             case FLOWER_POT:
-            case WALL_SIGN:
+            case ACACIA_WALL_SIGN:
+            case BIRCH_WALL_SIGN:
+            case DARK_OAK_WALL_SIGN:
+            case JUNGLE_WALL_SIGN:
+            case OAK_WALL_SIGN:
+            case SPRUCE_WALL_SIGN:
             case COBWEB:
             case DEAD_BUSH:
             case TORCH:
@@ -380,6 +378,9 @@ public class SitPerk extends Perk {
         ConfigurationSection section = getConfigSection(clicked);
         return section.getDouble("Z");
     }
-    
+
+    public static Material getItem() {
+        return item;
+    }
 }
     

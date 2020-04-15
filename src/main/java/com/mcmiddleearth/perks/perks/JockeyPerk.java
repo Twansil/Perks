@@ -19,7 +19,6 @@ package com.mcmiddleearth.perks.perks;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.listeners.JockeyListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -32,11 +31,9 @@ import org.bukkit.entity.Player;
  */
 public class JockeyPerk extends Perk {
     
-    @Getter
-    private static final String antiJockeyPermission 
+    private static final String antiJockeyPermission
             = PerksPlugin.getPerkString("jockey","antiJockeyPermission","perks.antijockey");
     
-    @Getter
     private static Material itemMaterial;
     
     public JockeyPerk() {
@@ -95,6 +92,14 @@ public class JockeyPerk extends Perk {
     public void writeDefaultConfig(ConfigurationSection config) {
         config.set("antiJockeyPermission",antiJockeyPermission);
         config.set("item", itemMaterial.name());
+    }
+
+    public static String getAntiJockeyPermission() {
+        return antiJockeyPermission;
+    }
+
+    public static Material getItemMaterial() {
+        return itemMaterial;
     }
 }
     
