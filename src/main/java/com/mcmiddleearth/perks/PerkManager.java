@@ -17,10 +17,10 @@
 package com.mcmiddleearth.perks;
 
 import com.mcmiddleearth.perks.perks.Perk;
+import org.bukkit.plugin.PluginManager;
+
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Getter;
-import org.bukkit.plugin.PluginManager;
 
 /**
  *
@@ -28,16 +28,13 @@ import org.bukkit.plugin.PluginManager;
  */
 public class PerkManager {
     
-    @Getter
     private static final Set<Perk> perks = new HashSet<>();
     
     public static void addPerk(Perk perk) {
         perks.add(perk);
         PerksPlugin plugin = PerksPlugin.getInstance();
-//Logger.getGlobal().info("REgister: "+perk.getName());
         PluginManager pluginManager = PerksPlugin.getInstance().getServer().getPluginManager();
         if(perk.getListener()!=null) {
-//Logger.getGlobal().info("REgister events: "+perk.getName());
             pluginManager.registerEvents(perk.getListener(),plugin);
         }
         if(perk.getHandler()!=null) {
@@ -61,4 +58,7 @@ public class PerkManager {
         return perk!=null && PerksPlugin.getInstance().isPerkEnabled(perk);
     }
 
+    public static Set<Perk> getPerks() {
+        return perks;
+    }
 }

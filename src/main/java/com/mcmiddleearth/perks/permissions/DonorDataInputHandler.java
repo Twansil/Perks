@@ -45,8 +45,6 @@ public class DonorDataInputHandler extends HttpTextInputHandler{
         MemoryConfiguration config = new MemoryConfiguration();
         try(Scanner scanner = new Scanner(reader)) {
             scanner.useDelimiter("</td>");
-//Logger.getGlobal().info(scanner.next());
-            //scanner.nextLine();
             scanner.next();
             scanner.next();
             scanner.next();
@@ -54,26 +52,21 @@ public class DonorDataInputHandler extends HttpTextInputHandler{
             scanner.next();
             while(scanner.hasNext()) {
                 String name = scanner.next();
-//Logger.getGlobal().info("Name "+name);
                 name = name.substring(name.indexOf("<td>")+4);
                 String uuid = scanner.next();
-//Logger.getGlobal().info("uuid "+uuid);
                 uuid = uuid.substring(uuid.indexOf("<td>")+4);
                 if(uuid.equals("") && name.equals("")) {
                     scanner.next();
                     scanner.next();
                     continue;
                 }
-//Logger.getGlobal().info(name+"                  "+uuid);
                 if(uuid.equals("")) {
                     uuid = Bukkit.getOfflinePlayer(name).getUniqueId().toString();
-                    //uuid = uuid.replace("-", "");
                 } else {
                     uuid = uuidFromString(uuid).toString();
                 }
                 if(!uuid.equals("")) {
                     String donation = scanner.next();
-//Logger.getGlobal().info(donation);
                     donation = donation.substring(donation.indexOf("<td>")+4);
                     donation = "Donor_"+donation.substring(0,donation.indexOf("."));
                     List<String> donationList = new ArrayList<>();

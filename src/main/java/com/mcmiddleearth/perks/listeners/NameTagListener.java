@@ -18,29 +18,29 @@ package com.mcmiddleearth.perks.listeners;
 
 import com.mcmiddleearth.perks.perks.NameTagPerk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+
 import java.util.logging.Logger;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
- * 
  * @author Eriol_Eandur
  */
 
 public class NameTagListener implements Listener {
 
     NameTagPerk perk;
-    
+
     public NameTagListener(NameTagPerk perk) {
         this.perk = perk;
     }
-    
-    @EventHandler(priority=EventPriority.HIGHEST)
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void playerJoin(PlayerJoinEvent event) {
-Logger.getGlobal().info("Player join Name Tag listener");
-        if(perk.isEnabled()
+        if (perk.isEnabled()
                 && PermissionData.isAllowed(event.getPlayer(), perk)) {
             perk.setNameTag(event.getPlayer(), true);
         }

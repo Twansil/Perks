@@ -73,9 +73,7 @@ public class HorseListener implements Listener {
     // Remove horse when rider dismounts
     @EventHandler
     public void horseDismount(VehicleExitEvent event) {
-//Logger.getGlobal().info("dismount1111111");
         if (HorsePerk.isHorsePerk(event.getVehicle())) {
-//Logger.getGlobal().info("dismount21111111");
             event.getVehicle().remove();
         }
     }
@@ -128,14 +126,6 @@ public class HorseListener implements Listener {
             && !event.getSpawnReason().equals(SpawnReason.CUSTOM)) {
             event.setCancelled(true);
         }
-        /*if(HorsePerk.isHorsePerk(event.getEntity())) {
-            if (HorsePerk.isAllowSpawn()) {
-                event.setCancelled(false);
-            } else {
-                event.setCancelled(true);
-            }
-        }*/
     }
         
-
 }

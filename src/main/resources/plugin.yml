@@ -2,8 +2,9 @@ name: ${project.artifactId}
 main: com.mcmiddleearth.perks.PerksPlugin
 version: ${project.version}
 authors: [daggs, meggawatts, Eriol_Eandur]
+softdepend: [bukkit, worldedit, spigot-api]
 depend: [PluginUtils]
-api-version: 1.13
+api-version: 1.15
 
 commands:
    perk:

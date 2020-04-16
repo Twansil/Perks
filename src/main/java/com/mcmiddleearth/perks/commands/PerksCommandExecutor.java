@@ -19,14 +19,14 @@ package com.mcmiddleearth.perks.commands;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.permissions.Permissions;
 import com.mcmiddleearth.pluginutil.message.FancyMessage;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -34,7 +34,6 @@ import org.bukkit.entity.Player;
  */
 public class PerksCommandExecutor implements CommandExecutor {
 
-    @Getter
     private final Map <String, PerksCommandHandler> commands = new LinkedHashMap <>();
     
     public PerksCommandExecutor() {
@@ -43,9 +42,6 @@ public class PerksCommandExecutor implements CommandExecutor {
         addCommandHandler("info", new EnableHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("open", new OpenHandler(Permissions.ADMIN.getPermissionNode()));
         addCommandHandler("close", new OpenHandler(Permissions.ADMIN.getPermissionNode()));
-        //addCommandHandler("light", new LightHandler(Permissions.USER.getPermissionNode()));
-        //addCommandHandler("fire", new FireHandler(Permissions.USER.getPermissionNode()));
-        //addCommandHandler("mount", new HorseHandler(Permissions.USER.getPermissionNode()));
     }
     
     @Override
@@ -64,9 +60,6 @@ public class PerksCommandExecutor implements CommandExecutor {
     }
     
     private void sendCommandList(CommandSender cs) {
-        //PluginData.getMessageUtil().sendErrorMessage(cs, "You're missing subcommand name for this command.");
-        //PluginDescriptionFile descr = PerksPlugin.getInstance().getDescription();
-        //PerksPlugin.getMessageUtil().sendErrorMessage(cs, descr.getName()+" - version "+descr.getVersion());
         PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Help for Perks plugin: ");
         for(String command: commands.keySet()) {
             PerksCommandHandler handler = commands.get(command);
@@ -91,5 +84,9 @@ public class PerksCommandExecutor implements CommandExecutor {
     
     public final void addCommandHandler(String name, PerksCommandHandler handler) {
         commands.put(name, handler);
+    }
+
+    public Map<String, PerksCommandHandler> getCommands() {
+        return commands;
     }
 }

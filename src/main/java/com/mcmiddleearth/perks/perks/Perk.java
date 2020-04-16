@@ -18,7 +18,6 @@ package com.mcmiddleearth.perks.perks;
 
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.commands.PerksCommandHandler;
-import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
 
@@ -28,16 +27,11 @@ import org.bukkit.event.Listener;
  */
 public class Perk {
     
-    @Getter
     private final String name;
     
-    @Getter
     private PerksCommandHandler handler;
-    
-    @Getter
     private Listener listener;
     
-    @Getter
     private String[] commands;
     
     public Perk(String name) {
@@ -68,4 +62,20 @@ public class Perk {
     public void enable() {}
     
     public void writeDefaultConfig(ConfigurationSection config) {}
+
+    public String getName() {
+        return name;
+    }
+
+    public PerksCommandHandler getHandler() {
+        return handler;
+    }
+
+    public Listener getListener() {
+        return listener;
+    }
+
+    public String[] getCommands() {
+        return commands;
+    }
 }
