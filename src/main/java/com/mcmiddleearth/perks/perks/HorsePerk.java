@@ -20,9 +20,7 @@ import com.mcmiddleearth.perks.commands.HorseHandler;
 import com.mcmiddleearth.perks.listeners.HorseListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.Permissions;
-import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -35,12 +33,9 @@ import org.bukkit.entity.Vehicle;
  */
 public class HorsePerk extends Perk {
     
-    @Getter
     private static Perk instance;
     
     public static final String horse_perk_custom_Name = "'s Sweet Ride!";
-    
-    @Getter
     private static boolean allowSpawn;
     
     public HorsePerk() {
@@ -89,5 +84,13 @@ public class HorsePerk extends Perk {
     @Override
     public void check() {
         checkHorses();
+    }
+
+    public static Perk getInstance() {
+        return instance;
+    }
+
+    public static boolean isAllowSpawn() {
+        return allowSpawn;
     }
 }

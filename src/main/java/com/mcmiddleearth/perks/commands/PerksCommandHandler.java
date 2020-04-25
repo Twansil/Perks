@@ -19,7 +19,6 @@ package com.mcmiddleearth.perks.commands;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.Perk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
-import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,12 +31,9 @@ public abstract class PerksCommandHandler {
     
     private final String[] permissionNodes;
     
-    @Getter
     private final int minArgs;
     
     private boolean playerOnly = true;
-    
-    @Getter
     private final Perk perk;
     
     public PerksCommandHandler(int minArgs, boolean playerOnly, Perk perk, String... permissionNodes) {
@@ -66,7 +62,6 @@ public abstract class PerksCommandHandler {
             return;
         }
         
-//Logger.getGlobal().info("Perk: "+perk+"  "+PerksPlugin.getInstance().isPerkEnabled(perk));
         if(perk!=null && !PerksPlugin.getInstance().isPerkEnabled(perk)) {
             sendNotEnabledErrorMessage(p);
             return;
@@ -123,5 +118,13 @@ public abstract class PerksCommandHandler {
         } else {
             return ChatColor.RED+" (But perks are disabled in general)";
         }
+    }
+
+    public int getMinArgs() {
+        return minArgs;
+    }
+
+    public Perk getPerk() {
+        return perk;
     }
 }

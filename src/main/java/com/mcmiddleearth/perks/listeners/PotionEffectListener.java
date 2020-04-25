@@ -62,12 +62,10 @@ public class PotionEffectListener implements Listener {
         }
         PotionEffectPerk potionPerk = (PotionEffectPerk) perk;
         Player p = event.getPlayer();
-//Logger.getGlobal().info("PotionEfectListener Perk found");
         if(potionPerk.isActive(p)) {
             potionPerk.removeEffect(p);
             return;
         }
-//Logger.getGlobal().info("PotionEfectListener add effect");
         if(!PerkManager.isEnabled(perk.getName())) {
             PerksPlugin.getMessageUtil().sendErrorMessage(p, "The "+name+" perk is not enabled.");
             return;

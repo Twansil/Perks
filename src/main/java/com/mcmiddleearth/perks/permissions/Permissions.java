@@ -16,8 +16,6 @@
  */
 package com.mcmiddleearth.perks.permissions;
 
-import lombok.Getter;
-
 /**
  *
  * @author Eriol_Eandur
@@ -27,11 +25,13 @@ public enum Permissions {
     USER         ("perks.user"),
     ADMIN        ("perks.admin");
 
-    @Getter
     private final String permissionNode;
 
     private Permissions(String permissionNode) {
         this.permissionNode = permissionNode;
-    }    
-    
+    }
+
+    public String getPermissionNode() {
+        return permissionNode;
+    }
 }

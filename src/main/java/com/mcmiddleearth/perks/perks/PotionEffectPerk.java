@@ -21,9 +21,6 @@ import com.mcmiddleearth.perks.commands.PotionEffectHandler;
 import com.mcmiddleearth.perks.listeners.PotionEffectListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.Permissions;
-import java.util.Arrays;
-import java.util.logging.Logger;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -35,13 +32,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Eriol_Eandur
  */
 public class PotionEffectPerk extends Perk {
     
-    @Getter
     private String itemName = PerksPlugin.getPerkString(this.getName(),
                                                              "itemName",null);
     
@@ -78,14 +76,11 @@ public class PotionEffectPerk extends Perk {
     public void giveEffect(final Player player) {
         for(PotionEffectData data:effectData) {
             player.addPotionEffect(data.getPotionEffect(), true);
-//Logger.getGlobal().info("Effect: "+ data.type+"    Amplifier: "+data.amplifier+"     Duration: "+data.duration);
 
-//Logger.getGlobal().info(""+player.hasPotionEffect(data.type));
             final PotionEffectData dataF = data;
             new BukkitRunnable() {
                 @Override
                 public void run() {
-//Logger.getGlobal().info(""+player.hasPotionEffect(dataF.type));
                 }
             }.runTaskLater(PerksPlugin.getInstance(),1);
             player.getWorld().playSound(player.getLocation(), data.getWorldSound(),1,1);
@@ -101,12 +96,10 @@ public class PotionEffectPerk extends Perk {
                 return false;
             }
         }
-//Logger.getGlobal().info("Active is true");
         return true;
     }
     
     public void removeEffect(Player player) {
-//Logger.getGlobal().info("remove effect");
         for(PotionEffectData data:effectData) {
             if(player.hasPotionEffect(data.type)) {
                 player.getWorld().playSound(player.getLocation(), data.getWorldSound(),1,1);
@@ -118,9 +111,8 @@ public class PotionEffectPerk extends Perk {
     public static class PotionEffectData {
         private final int duration, amplifier;
         private final PotionEffectType type;
-        @Getter 
+
         private final Sound worldSound;
-        @Getter
         private final Sound[] playerSounds;
         
         public PotionEffectData(String name, PotionEffectType type, //int duration, int amplifier,
@@ -135,7 +127,14 @@ public class PotionEffectPerk extends Perk {
         public PotionEffect getPotionEffect() {
             return new PotionEffect(type, duration, amplifier);
         }
-        
+
+        public Sound getWorldSound() {
+            return worldSound;
+        }
+
+        public Sound[] getPlayerSounds() {
+            return playerSounds;
+        }
     }
     
     @Override
@@ -158,5 +157,9 @@ public class PotionEffectPerk extends Perk {
         config.set("duration", 1200);
         config.set("amplifier", 1);
         config.set("item", item.getType().name());
+    }
+
+    public String getItemName() {
+        return itemName;
     }
 }

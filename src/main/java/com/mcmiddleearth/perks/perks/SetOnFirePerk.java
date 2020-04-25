@@ -19,7 +19,6 @@ package com.mcmiddleearth.perks.perks;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.commands.FireHandler;
 import com.mcmiddleearth.perks.permissions.Permissions;
-import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -28,10 +27,7 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class SetOnFirePerk extends Perk {
     
-    @Getter
     private final int defaultTicks=PerksPlugin.getPerkInt(this.getName(), "defaultTicks",200);
-
-    @Getter
     private final int maxTicks=PerksPlugin.getPerkInt(this.getName(), "maxTicks",2000);
     
     public SetOnFirePerk() {
@@ -44,6 +40,13 @@ public class SetOnFirePerk extends Perk {
         config.set("defaultTicks", defaultTicks);
         config.set("maxTicks", maxTicks);
     }
-  
+
+    public int getDefaultTicks() {
+        return defaultTicks;
+    }
+
+    public int getMaxTicks() {
+        return maxTicks;
+    }
 }
     

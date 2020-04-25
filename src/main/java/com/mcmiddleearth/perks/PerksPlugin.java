@@ -16,23 +16,12 @@
  */
 package com.mcmiddleearth.perks;
 
-import com.mcmiddleearth.perks.permissions.PermissionUpdater;
 import com.mcmiddleearth.perks.commands.PerksCommandExecutor;
 import com.mcmiddleearth.perks.listeners.PermissionListener;
-import com.mcmiddleearth.perks.perks.HorsePerk;
-import com.mcmiddleearth.perks.perks.ItemPerk;
-import com.mcmiddleearth.perks.perks.JockeyPerk;
-import com.mcmiddleearth.perks.perks.NameTagPerk;
-import com.mcmiddleearth.perks.perks.Perk;
-import com.mcmiddleearth.perks.perks.PotionEffectPerk;
-import com.mcmiddleearth.perks.perks.SetOnFirePerk;
-import com.mcmiddleearth.perks.perks.SitPerk;
-import com.mcmiddleearth.perks.perks.WizardLightPerk;
+import com.mcmiddleearth.perks.perks.*;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+import com.mcmiddleearth.perks.permissions.PermissionUpdater;
 import com.mcmiddleearth.pluginutil.message.MessageUtil;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,24 +29,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Eriol_Eandur
  */
 public class PerksPlugin extends JavaPlugin {
     
-    @Getter
     private static PerksPlugin instance;
-    
-    @Getter 
     private static ConfigurationSection perkSettings;
-    
-    @Getter
+
     private static final MessageUtil messageUtil = new MessageUtil();
-    
-    @Getter
+
     private PerksCommandExecutor perksExecutor;
-    
     private PermissionUpdater permissionUpdater;
     
     @Override
@@ -114,7 +100,6 @@ public class PerksPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         permissionUpdater.cancel();
-        //HorsePerk.clearHorses();
         for(Perk perk: PerkManager.getPerks()) {
             try {
                 perk.disable();
@@ -186,5 +171,21 @@ public class PerksPlugin extends JavaPlugin {
             return def;
         }
         return perkSettings.getConfigurationSection(perk).getDouble(key);
+    }
+
+    public static PerksPlugin getInstance() {
+        return instance;
+    }
+
+    public static ConfigurationSection getPerkSettings() {
+        return perkSettings;
+    }
+
+    public static MessageUtil getMessageUtil() {
+        return messageUtil;
+    }
+
+    public PerksCommandExecutor getPerksExecutor() {
+        return perksExecutor;
     }
 }
