@@ -70,6 +70,7 @@ public class PerksPlugin extends JavaPlugin {
         PerkManager.addPerk(new WizardLightPerk());
         PerkManager.addPerk(new SitPerk());
         PerkManager.addPerk(new JockeyPerk());
+        PerkManager.addPerk(new GallopPerk());
         PerkManager.addPerk(new PotionEffectPerk("speed",
                                                  new ItemStack(Material.DIAMOND_BOOTS),
                                                  "Boots of Speed",
