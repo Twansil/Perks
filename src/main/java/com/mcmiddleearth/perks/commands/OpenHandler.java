@@ -52,25 +52,28 @@ public class OpenHandler extends PerksCommandHandler {
     
     @Override
     protected void execute(CommandSender cs, String cmd, String... args) {
-        int duration=10;
+        int tempDuration=10;
         if(args.length>1 && NumericUtil.isInt(args[1])) {
-            duration = NumericUtil.getInt(args[1]);
+            tempDuration = NumericUtil.getInt(args[1]);
         }
-        for(Perk search: PerkManager.getPerks()) {
-            if(search.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-                if(cmd.equals("open")) {
-                    PermissionData.enableFreePerk(search, duration);
-                    PerksPlugin.getMessageUtil().sendInfoMessage(cs, search.getName()
-                            +" perk is now open for everyone for up to "+duration+" minutes."
-                            +this.disabledWarning());
-                    return;
-                } else {
-                    PermissionData.disableFreePerk(search);
-                    search.check();
-                    PerksPlugin.getMessageUtil().sendInfoMessage(cs, search.getName()
-                            +" perk is no longer open for everyone.");
-                    return;
-                }
+        int duration = tempDuration;
+        Perk perk = PerkManager.getPerks().stream().filter(search -> {
+                        return search.getName().toLowerCase().startsWith(args[0].toLowerCase());})
+                    .sorted((perk1,perk2) -> perk1.getName().compareTo(perk2.getName()))
+                    .findFirst().orElse(null);
+        if(perk!=null) {
+            if(cmd.equals("open")) {
+                PermissionData.enableFreePerk(perk, duration);
+                PerksPlugin.getMessageUtil().sendInfoMessage(cs, perk.getName()
+                        +" perk is now open for everyone for up to "+duration+" minutes."
+                        +this.disabledWarning());
+                return;
+            } else {
+                PermissionData.disableFreePerk(perk);
+                perk.check();
+                PerksPlugin.getMessageUtil().sendInfoMessage(cs, perk.getName()
+                        +" perk is no longer open for everyone.");
+                return;
             }
         }
         sentInvalidArgumentMessage(cs);
