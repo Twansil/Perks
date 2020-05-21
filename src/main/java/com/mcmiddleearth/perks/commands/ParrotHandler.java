@@ -59,11 +59,6 @@ public class ParrotHandler extends PerksCommandHandler {
         Player player = (Player)cs;
         
              
-        if (player.getPassengers().isEmpty() == false) {
-           
-            PerksPlugin.getMessageUtil().sendErrorMessage(cs, "You already have a parrot!");
-            return;
-        } 
         if(args.length>0 && args[0].equalsIgnoreCase("info")) {
             PerksPlugin.getMessageUtil().sendInfoMessage(cs, "Get a parrot: /perk parrot [remove] [color] [position] ");
             PerksPlugin.getMessageUtil().sendInfoMessage(cs, "[color] -> "+ChatColor.GREEN+"blue, cyan, gray, green, red,");
@@ -71,9 +66,15 @@ public class ParrotHandler extends PerksCommandHandler {
          
             return;
         }
+        if (player.isFlying()) {
+           
+            PerksPlugin.getMessageUtil().sendErrorMessage(cs, "Parrots are not supported while flying!");
+            return;
+        } 
         Variant variant = Variant.values()[NumericUtil.getRandom(0, Variant.values().length-1)];
         boolean leftShoulder = NumericUtil.getRandom(0, 1)>0;
         boolean removal = false;
+        boolean shoulderRandom = true;
         for(String argument: args) {
             try{
                 variant = Variant.valueOf(argument.toUpperCase());
@@ -81,9 +82,11 @@ public class ParrotHandler extends PerksCommandHandler {
             } catch(Exception ex) {}
             switch(argument) {
                 case "left":
-                    leftShoulder = true; break;
+                    leftShoulder = true; 
+                    shoulderRandom = false; break;
                 case "right":
-                    leftShoulder = false; break;
+                    leftShoulder = false; 
+                    shoulderRandom = false; break;
                 case "remove":
                     removal = true;
             }
@@ -95,7 +98,7 @@ public class ParrotHandler extends PerksCommandHandler {
             } else {
                 parrot = player.getShoulderEntityRight();
             }
-            if(parrot == null) {
+            if(parrot == null && shoulderRandom) {
                 leftShoulder = !leftShoulder;
                 if(leftShoulder) {
                     parrot = player.getShoulderEntityLeft();
@@ -118,9 +121,9 @@ public class ParrotHandler extends PerksCommandHandler {
             if(leftShoulder) {
                 alreadyThere = player.getShoulderEntityLeft() != null;
             } else {
-                alreadyThere = player.getShoulderEntityLeft() != null;
+                alreadyThere = player.getShoulderEntityRight() != null;
             }
-            if(alreadyThere) {
+            if(alreadyThere && shoulderRandom) {
                 leftShoulder = !leftShoulder;
                 if(leftShoulder) {
                     alreadyThere = player.getShoulderEntityLeft() != null;
