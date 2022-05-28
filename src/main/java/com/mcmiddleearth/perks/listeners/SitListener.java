@@ -22,6 +22,7 @@ import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.perks.SitPerk;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.pluginutil.EventUtil;
+import org.bukkit.GameMode;
 import org.bukkit.entity.ArmorStand;
 
 import org.bukkit.entity.Player;
@@ -29,11 +30,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.spigotmc.event.entity.EntityDismountEvent;
+
+import java.util.logging.Logger;
 
 /**
  * 
@@ -84,9 +84,21 @@ public class SitListener implements Listener {
         SitPerk.sitUp(event.getPlayer());
     }
 
+    @EventHandler
+    public void playerChangeWorld(PlayerChangedWorldEvent event) {
+        SitPerk.sitUp(event.getPlayer());
+    }
+
+    @EventHandler
+    public void playerChangeGamemode(PlayerGameModeChangeEvent event) {
+        if(event.getNewGameMode().equals(GameMode.SPECTATOR)) {
+            SitPerk.sitUp(event.getPlayer());
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void playerSitUp(EntityDismountEvent event) {
-        if(event.getEntity() instanceof Player 
+        if(event.getEntity() instanceof Player
                 && event.getDismounted() instanceof ArmorStand) {
             SitPerk.sitUp((Player) event.getEntity());
         }
