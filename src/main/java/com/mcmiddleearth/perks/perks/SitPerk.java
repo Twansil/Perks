@@ -19,6 +19,7 @@ package com.mcmiddleearth.perks.perks;
 import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.listeners.SitListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
+import jdk.jpackage.internal.Log;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -97,20 +98,11 @@ public class SitPerk extends Perk {
     public static void sitUp(final Player player) {
         ArmorStand marker = armorStands.get(player);
         if(marker!=null) {
-            if(player.isInsideVehicle() 
-                    && player.getVehicle().equals(marker)) {
-                player.eject();
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        player.teleport(player.getLocation().getBlock()
-                                      .getRelative(BlockFace.UP, 5).getLocation());
-                    }
-                }.runTaskLater(PerksPlugin.getInstance(),10);
-            }
             marker.remove();
+            armorStands.remove(player);
+            player.teleport(player.getLocation().getBlock()
+                          .getRelative(BlockFace.UP, 1).getLocation());
         }
-        armorStands.remove(player);
     }
     
     @Override
