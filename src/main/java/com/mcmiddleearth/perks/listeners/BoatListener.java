@@ -39,11 +39,11 @@ public class BoatListener implements Listener {
             if (BoatPerk.isBoatPerk(event.getVehicle())) {
                 Player p = (Player) event.getEntered();
                 Entity h = event.getVehicle();
-                if ((!h.getCustomName().contains(p.getName()))
-                            && PermissionData.isAllowed(p, PerkManager.forName("horse"))) {
+                if (!(h.getCustomName().contains(p.getName())
+                            && PermissionData.isAllowed(p, PerkManager.forName("boat")))) {
                     event.setCancelled(true);
                     h.remove();
-                    PerksPlugin.getMessageUtil().sendErrorMessage(p, "Sorry, this is not your horse!");
+                    PerksPlugin.getMessageUtil().sendErrorMessage(p, "Sorry, this is not your boat!");
                 }
             }
         }
