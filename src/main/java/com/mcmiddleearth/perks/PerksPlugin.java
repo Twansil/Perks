@@ -21,6 +21,7 @@ import com.mcmiddleearth.perks.listeners.PermissionListener;
 import com.mcmiddleearth.perks.perks.*;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.PermissionUpdater;
+import com.mcmiddleearth.perks.tabCompleter.TabComplete;
 import com.mcmiddleearth.pluginutil.message.MessageUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -63,6 +64,7 @@ public class PerksPlugin extends JavaPlugin {
         
         perksExecutor = new PerksCommandExecutor();
         getCommand("perk").setExecutor(perksExecutor);
+        getCommand("perk").setTabCompleter(new TabComplete());
 
         PerkManager.addPerk(new NameTagPerk());
         PerkManager.addPerk(new HorsePerk());
