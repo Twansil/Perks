@@ -1,7 +1,7 @@
 name: ${project.artifactId}
 main: com.mcmiddleearth.perks.PerksPlugin
 version: ${project.version}
-authors: [daggs, meggawatts, Eriol_Eandur]
+authors: [daggs, meggawatts, Eriol_Eandur, Jubo]
 softdepend: [bukkit, worldedit, spigot-api]
 depend: [PluginUtils]
 api-version: 1.18
@@ -10,6 +10,11 @@ commands:
    perk:
       description: command to manage and use perks
       usage: /perk
+      permission: perks.user
+      permission-message: Sorry, you don't have permission to use that command.
+   videoteam:
+      description: command to hide your nametag
+      usage: /videoteam
       permission: perks.user
       permission-message: Sorry, you don't have permission to use that command.
 permissions:

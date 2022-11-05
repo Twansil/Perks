@@ -17,6 +17,7 @@
 package com.mcmiddleearth.perks;
 
 import com.mcmiddleearth.perks.commands.PerksCommandExecutor;
+import com.mcmiddleearth.perks.commands.VideoTeamCommand;
 import com.mcmiddleearth.perks.listeners.PermissionListener;
 import com.mcmiddleearth.perks.perks.*;
 import com.mcmiddleearth.perks.permissions.PermissionData;
@@ -65,6 +66,8 @@ public class PerksPlugin extends JavaPlugin {
         perksExecutor = new PerksCommandExecutor();
         getCommand("perk").setExecutor(perksExecutor);
         getCommand("perk").setTabCompleter(new TabComplete());
+        getCommand("videoteam").setExecutor(new VideoTeamCommand());
+        VideoTeamCommand.enableVideoTeam();
 
         PerkManager.addPerk(new NameTagPerk());
         PerkManager.addPerk(new HorsePerk());
@@ -106,6 +109,7 @@ public class PerksPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         permissionUpdater.cancel();
+        VideoTeamCommand.disableVideoTeam();
         for(Perk perk: PerkManager.getPerks()) {
             try {
                 perk.disable();
