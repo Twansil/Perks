@@ -26,6 +26,8 @@ public class TabComplete implements TabCompleter {
         if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("fire"))) completions.add("fire");
         if(PermissionData.isAllowed((Player)commandSender,PerkManager.forName("compass"))) completions.add("compass");
 
+        java.util.Collections.sort(completions);
+
         return completions;
     }
 }
