@@ -15,9 +15,11 @@ commands:
    videoteam:
       description: command to hide your nametag
       usage: /videoteam
-      permission: perks.user
+      permission: videoteam.user
       permission-message: Sorry, you don't have permission to use that command.
 permissions:
+  videoteam.user:
+      default: op
   perks.user:
       default: op
   perks.admin:
