@@ -1,6 +1,7 @@
 package com.mcmiddleearth.perks.commands;
 
 import com.mcmiddleearth.perks.PerksPlugin;
+import com.mcmiddleearth.perks.permissions.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,6 +22,10 @@ public class VideoTeamCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;
+        if(player.hasPermission(Permissions.USER_VIDEOTEAM.getPermissionNode())){
+            PerksPlugin.getMessageUtil().sendNoPermissionError(player);
+            return true;
+        }
         if(team == null) return false;
         if(team.hasPlayer(player)) {
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());

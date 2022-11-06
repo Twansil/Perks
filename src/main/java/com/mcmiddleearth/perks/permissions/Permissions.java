@@ -23,6 +23,7 @@ package com.mcmiddleearth.perks.permissions;
 public enum Permissions {
     
     USER         ("perks.user"),
+    USER_VIDEOTEAM ("videoteam.user"),
     ADMIN        ("perks.admin");
 
     private final String permissionNode;
