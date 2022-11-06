@@ -51,10 +51,10 @@ public class VideoTeamCommand implements CommandExecutor {
     }
 
     private void sendActivateMessage(Player player){
-        PerksPlugin.getMessageUtil().sendInfoMessage(player,"You are now hiding your nametag");
+        PerksPlugin.getMessageUtil().sendInfoMessage(player,"You can now hide all nametags with F1.");
     }
 
     private void sendShowNametagMessage(Player player){
-        PerksPlugin.getMessageUtil().sendInfoMessage(player,"You are now showing your nametag");
+        PerksPlugin.getMessageUtil().sendInfoMessage(player,"You switched the videoteam functionality off.");
     }
 }
