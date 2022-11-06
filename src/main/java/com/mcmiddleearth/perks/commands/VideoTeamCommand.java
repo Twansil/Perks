@@ -22,11 +22,14 @@ public class VideoTeamCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;
-        if(player.hasPermission(Permissions.USER_VIDEOTEAM.getPermissionNode())){
+        if(!player.hasPermission(Permissions.USER_VIDEOTEAM.getPermissionNode())){
             PerksPlugin.getMessageUtil().sendNoPermissionError(player);
             return true;
         }
-        if(team == null) return false;
+        if(team == null) {
+            sendErrorMessage(player);
+            return true;
+        }
         if(team.hasPlayer(player)) {
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             team.removePlayer(player);
@@ -53,6 +56,10 @@ public class VideoTeamCommand implements CommandExecutor {
         for(Player player : Bukkit.getOnlinePlayers()) team.removePlayer(player);
         if(team !=null) team.unregister();
         team = null;
+    }
+
+    private void sendErrorMessage(Player player){
+        PerksPlugin.getMessageUtil().sendErrorMessage(player,"Error, something went wrong.");
     }
 
     private void sendActivateMessage(Player player){
