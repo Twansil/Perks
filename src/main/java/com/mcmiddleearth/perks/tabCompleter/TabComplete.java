@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Jubo
+ */
 public class TabComplete implements TabCompleter {
 
     @Override

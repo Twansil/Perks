@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+/**
+ * @author Jubo
+ */
 public class VideoTeamCommand implements CommandExecutor {
 
     private static Team team;
