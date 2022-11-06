@@ -32,18 +32,20 @@ public class BoatListener implements Listener {
     
       
     // Checks if user getting on the boat has permission, and that the boat is
-    // his. Otherwise removes boat.
+    // his. Otherwise removes boat when empty.
     @EventHandler
     public void BoatMount(VehicleEnterEvent event) {
         if (event.getEntered() instanceof Player) {
             if (BoatPerk.isBoatPerk(event.getVehicle())) {
                 Player p = (Player) event.getEntered();
                 Entity h = event.getVehicle();
-                if ((!h.getCustomName().contains(p.getName()))
-                            && PermissionData.isAllowed(p, PerkManager.forName("horse"))) {
+                if (!(//h.getCustomName().contains(p.getName()) &&
+                            PermissionData.isAllowed(p, PerkManager.forName("boat")))) {
                     event.setCancelled(true);
-                    h.remove();
-                    PerksPlugin.getMessageUtil().sendErrorMessage(p, "Sorry, this is not your horse!");
+                    if(event.getVehicle().isEmpty()) {
+                        h.remove();
+                    }
+                    PerksPlugin.getMessageUtil().sendErrorMessage(p, "Sorry, this is not your boat!");
                 }
             }
         }
@@ -52,9 +54,9 @@ public class BoatListener implements Listener {
     // Remove boat when rider dismounts
     @EventHandler
     public void BoatDismount(VehicleExitEvent event) {
-Logger.getGlobal().info("dismount1");
-        if (BoatPerk.isBoatPerk(event.getVehicle())) {
-Logger.getGlobal().info("dismount2");
+//Logger.getGlobal().info("dismount1");
+        if (BoatPerk.isBoatPerk(event.getVehicle()) && event.getVehicle().getPassengers().size()<=1) {
+//Logger.getGlobal().info("dismount2");
             event.getVehicle().remove();
         }
     }
@@ -64,7 +66,8 @@ Logger.getGlobal().info("dismount2");
     public void riderDie(EntityDeathEvent event) {
         if (event.getEntity() instanceof Player) {
             if (event.getEntity().isInsideVehicle() 
-                    && BoatPerk.isBoatPerk(event.getEntity().getVehicle())) {
+                    && BoatPerk.isBoatPerk(event.getEntity().getVehicle())
+                    && event.getEntity().getVehicle().getPassengers().size()<=1) {
                 event.getEntity().getVehicle().remove();
             }
         }
@@ -74,7 +77,8 @@ Logger.getGlobal().info("dismount2");
     @EventHandler
     public void riderQuit(PlayerQuitEvent event) {
         if (event.getPlayer().isInsideVehicle()) {
-            if(BoatPerk.isBoatPerk(event.getPlayer().getVehicle())){
+            if(BoatPerk.isBoatPerk(event.getPlayer().getVehicle())
+                    && event.getPlayer().getVehicle().getPassengers().size()<=1){
                 event.getPlayer().getVehicle().remove();
             }
         }
@@ -84,7 +88,8 @@ Logger.getGlobal().info("dismount2");
     @EventHandler
     public void riderKick(PlayerKickEvent event) {
         if (event.getPlayer().isInsideVehicle()) {
-            if(BoatPerk.isBoatPerk(event.getPlayer().getVehicle())){
+            if(BoatPerk.isBoatPerk(event.getPlayer().getVehicle())
+                    && event.getPlayer().getVehicle().getPassengers().size()<=1){
                 event.getPlayer().getVehicle().remove();
             }
         }
