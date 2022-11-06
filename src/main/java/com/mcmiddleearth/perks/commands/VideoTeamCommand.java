@@ -23,6 +23,7 @@ public class VideoTeamCommand implements CommandExecutor {
         Player player = (Player) commandSender;
         if(team == null) return false;
         if(team.hasPlayer(player)) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             team.removePlayer(player);
             sendShowNametagMessage(player);
         }
