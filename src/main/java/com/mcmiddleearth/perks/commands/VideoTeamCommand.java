@@ -15,7 +15,7 @@ import org.bukkit.scoreboard.Team;
 public class VideoTeamCommand implements CommandExecutor {
 
     private static Team team;
-    private static final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+    private static Scoreboard board;
     private static final String teamName = "videoteam";
 
     @Override
@@ -23,10 +23,12 @@ public class VideoTeamCommand implements CommandExecutor {
         Player player = (Player) commandSender;
         if(team == null) return false;
         if(team.hasPlayer(player)) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             team.removePlayer(player);
             sendShowNametagMessage(player);
         }
         else {
+            player.setScoreboard(board);
             team.addPlayer(player);
             sendActivateMessage(player);
         }
@@ -34,6 +36,7 @@ public class VideoTeamCommand implements CommandExecutor {
     }
 
     public static void enableVideoTeam(){
+        board = Bukkit.getScoreboardManager().getNewScoreboard();
         team = board.getTeam(teamName);
         if(team == null){
             team = board.registerNewTeam(teamName);
