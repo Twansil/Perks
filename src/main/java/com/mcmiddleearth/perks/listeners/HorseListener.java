@@ -60,8 +60,8 @@ public class HorseListener implements Listener {
             if (HorsePerk.isHorsePerk(event.getVehicle())) {
                 Player p = (Player) event.getEntered();
                 Entity h = event.getVehicle();
-                if ((!h.getCustomName().contains(p.getName()))
-                            && PermissionData.isAllowed(p, PerkManager.forName("horse"))) {
+                if (!(h.getCustomName().contains(p.getName())
+                            && PermissionData.isAllowed(p, PerkManager.forName("horse")))) {
                     event.setCancelled(true);
                     h.remove();
                     PerksPlugin.getMessageUtil().sendErrorMessage(p, "Sorry, this is not your horse!");

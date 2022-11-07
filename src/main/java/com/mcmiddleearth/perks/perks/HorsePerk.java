@@ -16,16 +16,14 @@
  */
 package com.mcmiddleearth.perks.perks;
 
+import com.mcmiddleearth.perks.PerksPlugin;
 import com.mcmiddleearth.perks.commands.HorseHandler;
 import com.mcmiddleearth.perks.listeners.HorseListener;
 import com.mcmiddleearth.perks.permissions.PermissionData;
 import com.mcmiddleearth.perks.permissions.Permissions;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -43,7 +41,34 @@ public class HorsePerk extends Perk {
         setListener(new HorseListener());
         setCommandHandler(new HorseHandler(this, Permissions.USER.getPermissionNode()),"horse");
     }
-  
+
+    public static void spawn(Player player, Horse.Color color, Horse.Style style) {
+        World world = player.getWorld();
+        Location location = player.getLocation();
+        HorsePerk.allowSpawn(true);
+        Horse horse = world.spawn(location, Horse.class);
+        horse.setAdult();
+        horse.setColor(color);
+        horse.setStyle(style);
+        horse.setTamed(true);
+        horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
+        horse.setOwner(player);
+        horse.setCustomName(ChatColor.DARK_AQUA + player.getName()
+                + HorsePerk.horse_perk_custom_Name);
+        horse.addPassenger(player);
+        HorsePerk.allowSpawn(false);
+        PerksPlugin.getMessageUtil().sendInfoMessage(player, "Enjoy your ride!");
+        Bukkit.getScheduler().runTaskLater(PerksPlugin.getInstance(),()-> {
+            if(horse.getInventory().getSaddle() == null) {
+                horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
+                /*horse.remove();
+                Bukkit.getScheduler().runTaskLater(PerksPlugin.getInstance(),() -> {
+                    spawn(player, color, style);
+                }, 2);*/
+            }
+        }, 2);
+    }
+
     public void clearHorses() {
         for (World w : Bukkit.getServer().getWorlds()) {
             for (Entity e : w.getEntities()) {
