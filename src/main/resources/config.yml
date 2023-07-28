@@ -54,3 +54,4 @@ perks:
     enabled: true
   horse:
     enabled: true
+    dog:
